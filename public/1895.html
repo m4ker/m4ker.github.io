@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深入理解Magento－第九章－修改、扩展、重写Magento代码 | Maker&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="作为一个开发者的你，肯定要修改Magento代码去适应你的业务需求，但是在很多时候我们不希望修改Magento的核心代码，这 里有很多原因，例如将来还希望升级Magento、还想使用更多的Magento代码。如果你正在寻找修改Magento代码的最佳方式，那么此篇文章将 会是一个不错的教程。 适合对象：高级开发者 适合目标：开发者希望自定义修改Magento 当前版本：Magento vers">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Magento－第九章－修改、扩展、重写Magento代码">
+<meta property="og:url" content="https://blog.foolbird.net/1895.html">
+<meta property="og:site_name" content="Maker&#39;s Blog">
+<meta property="og:description" content="作为一个开发者的你，肯定要修改Magento代码去适应你的业务需求，但是在很多时候我们不希望修改Magento的核心代码，这 里有很多原因，例如将来还希望升级Magento、还想使用更多的Magento代码。如果你正在寻找修改Magento代码的最佳方式，那么此篇文章将 会是一个不错的教程。 适合对象：高级开发者 适合目标：开发者希望自定义修改Magento 当前版本：Magento vers">
+<meta property="og:locale">
+<meta property="article:published_time" content="2011-10-22T09:09:01.000Z">
+<meta property="article:modified_time" content="2023-12-30T06:45:52.786Z">
+<meta property="article:author" content="王默">
+<meta property="article:tag" content="magento">
+<meta property="article:tag" content="教程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@m4ker">
+  
+    <link rel="alternative" href="/atom.xml" title="Maker&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <!--
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Maker&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我相信, 太阳地下有很多值得去的地方, 最近的就在我们心中.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/history">History</a>
+        
+        
+          <a class="main-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-1895" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解Magento－第九章－修改、扩展、重写Magento代码
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/1895.html" class="article-date">
+  <time datetime="2011-10-22T09:09:01.000Z" itemprop="datePublished">2011-10-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <div>
+
+<p>作为一个开发者的你，肯定要修改Magento代码去适应你的业务需求，但是在很多时候我们不希望修改Magento的核心代码，这 里有很多原因，例如将来还希望升级Magento、还想使用更多的Magento代码。如果你正在寻找修改Magento代码的最佳方式，那么此篇文章将 会是一个不错的教程。</p>
+<p>适合对象：高级开发者</p>
+<p>适合目标：开发者希望自定义修改Magento</p>
+<p>当前版本：Magento versions: 1.4.0.1</p>
+<p>作者：<a href="http://www.wemvc.com/">精东</a></p>
+<p>最后修改时间：2010年7月13日</p>
+<p>版本：V 0.3.0</p>
+<h4 id="重写Magento模块-Module"><a href="#重写Magento模块-Module" class="headerlink" title="重写Magento模块(Module)"></a>重写Magento模块(Module)</h4><p>第一步，你需要创建属于你自己代码的命名空间，例如Wemvc，App等，为了方便与大家分享代码，我将空间命名为App。</p>
+<div>
+<div>
+<pre>app/
+     code/
+            core/
+            community/
+            local/
+                    App/</pre>
+</div>
+</div>
+假如你现在打算修改Mage/Catalog/Block/Breadcrumbs.php这个文件，你可以在你的命名空间，App里添加一个新的 模块“Catalog”。接下来创建块(Block)目录，并复制Breadcrumbs.php到你的新目录中。这里还需要你创建一个 config.xml配置文件。
+<div>
+<div>
+<pre>app/
+     code/
+            core/
+            community/
+            local/
+                    App/
+                               Catalog/
+                                          Block/
+                                                 Breadcrumbs.php
+                                          etc/
+                                                 config.xml</pre>
+</div>
+</div>
+修改Breadcrumbs.php的类名为App_Catalog_Block_Breadcrumbs，并继承原类名Mage_Catalog_Block_Breadcrumbs。
+现在，你需要激活你的新模块，这样magento才能够知道你的新模块。
+
+<p>创建文件app&#x2F;etc&#x2F;modules&#x2F;App_All.xml，添加如下代码。</p>
+<div>
+<div>
+<pre>&lt; ?xml version="1.0"?&gt;
+&lt;config&gt;
+     &lt;modules&gt;
+        &lt;App_Catalog&gt;
+            &lt;active&gt;true&lt;/active&gt;
+            &lt;codePool&gt;local&lt;/codePool&gt;
+        &lt;/App_Catalog&gt;
+     &lt;/modules&gt;
+&lt;/config&gt;</pre>
+</div>
+</div>
+下面我们需要一个特殊的标签来复写掉Breadcrumbs，下面我们通过模块的配置文件来实现。
+
+<h4 id="重写Magento区块-Blocks"><a href="#重写Magento区块-Blocks" class="headerlink" title="重写Magento区块(Blocks)"></a>重写Magento区块(Blocks)</h4><p>编辑文件“app&#x2F;code&#x2F;local&#x2F;App&#x2F;Catalog&#x2F;etc&#x2F;config.xml”</p>
+<div>
+<div>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config&gt;
+    &lt;modules&gt;
+        &lt;App_Catalog&gt;
+            &lt;version&gt;0.1.0&lt;/version&gt;
+        &lt;/App_Catalog&gt;
+    &lt;/modules&gt;
+    &lt;global&gt;
+        &lt;blocks&gt;
+            &lt;catalog&gt;
+                &lt;rewrite&gt;
+                        &lt;breadcrumbs&gt;App_Catalog_Block_Breadcrumbs&lt;/breadcrumbs&gt;
+                &lt;/rewrite&gt;
+            &lt;/catalog&gt;
+        &lt;/blocks&gt;
+    &lt;/global&gt;
+&lt;/config&gt;</pre>
+</div>
+</div>
+我们需要添加一个“blocks”  标签，或者在已经存在的“blocks”标签中添加内容。然后在模块名后面添加rewrite标签，在这个例子中模块名是“catalog”。然后我们看 “breadcrumbs”标签，这个标签帮助magento找到我们我们想修改的块。在我们的列子中，breadcrumbs是Magento核心代码 中的类名:  app/code/core/Mage/Catalog/Block/Breadcrumbs.php。如果你有更多的目录层级，可以用下滑线来分隔。例 如：
+<div>
+<div>
+<pre>      &lt;blocks&gt;
+          &lt;catalog&gt;
+              &lt;rewrite&gt;
+                      &lt;category_view&gt;App_Catalog_Block_Category_View&lt;/category_view&gt;
+              &lt;/rewrite&gt;
+          &lt;/catalog&gt;
+      &lt;/blocks&gt;</pre>
+</div>
+</div>
+在这个例子中，我们重写了app/code/core/Mage/Catalog/Block/Category/View.php。
+
+<p>在breadcrumbs标签中的值是你的类名，这样Magento就可以获取你的类，因为类名与你的目录名一致。用过zend  framework的人都知道，自动加载auto  loader这个东西，它会跟你类名中的下滑线去你的目录中需要对应的类文件。记住一点，下滑线代表下一级别的文件夹，如果你的类名与你的文件目录名不一 致，那么Magento根本不会理睬你。<br>举例来说：</p>
+<div>
+<div>
+<pre>App_Catalog_Block_Breadcrumbs → /app/code/local/App/Catalog/Block/Breadcrumbs.php 
+App_Catalog_Block_Category_View → /app/code/local/App/Catalog/Block/Category/View.php</pre>
+</div>
+</div>
+
+<h4 id="重写Magento控制器-Controller-正则表达式匹配式"><a href="#重写Magento控制器-Controller-正则表达式匹配式" class="headerlink" title="重写Magento控制器(Controller)-正则表达式匹配式"></a>重写Magento控制器(Controller)-正则表达式匹配式</h4><p>重写Magento控制器我们我们以重写购物车为例。</p>
+<p>1、首先在App下创建新的模块，依次创建如下文件：</p>
+<div>
+<div>
+<pre>/app/code/local/App/Shopping
+/app/code/local/App/Shopping/etc
+/app/code/local/App/Shopping/etc/config.xml
+/app/code/local/App/Shopping/controllers
+/app/code/local/App/Shopping/controllers/CartController.php</pre>
+</div>
+</div>
+2、编辑/app/code/local/App/Shopping/etc/config.xml文件，加入如下代码：
+<div>
+<div>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;config&gt;
+    &lt;modules&gt;
+        &lt;App_Shopping&gt;
+            &lt;version&gt;0.1.0&lt;/version&gt;
+        &lt;/App_Shopping&gt;
+    &lt;/modules&gt;
+    &lt;global&gt;
+        &lt;!-- This rewrite rule could be added to the database instead --&gt;
+        &lt;rewrite&gt;
+            &lt;!-- This is an identifier for your rewrite that should be unique --&gt;
+            &lt;!-- THIS IS THE CLASSNAME IN YOUR OWN CONTROLLER --&gt;
+            &lt;App_Shopping_cart&gt;
+                &lt;from&gt;&lt;![CDATA[#^/checkout/cart/#]]&gt;&lt;/from&gt;
+                &lt;!--
+                    - Shopping module matches the router frontname below - checkout_cart
+                    matches the path to your controller Considering the router below,
+                    "/shopping/cart/" will be "translated" to
+                    "/App/Shopping/controllers/CartController.php" (?)
+                --&gt;
+                &lt;to&gt;/shopping/cart/&lt;/to&gt;
+            &lt;/App_Shopping_cart&gt;
+        &lt;/rewrite&gt;
+    &lt;/global&gt;
+    &lt;!--
+        If you want to overload an admin-controller this tag should be &lt;admin&gt;
+        instead, or &lt;adminhtml&gt; if youre overloading such stuff (?)
+    --&gt;
+    &lt;frontend&gt;
+        &lt;routers&gt;
+            &lt;App_Shopping&gt;
+                &lt;!-- should be set to "admin" when overloading admin stuff (?) --&gt;
+                &lt;use&gt;standard&lt;/use&gt;
+                &lt;args&gt;
+                    &lt;module&gt;App_Shopping&lt;/module&gt;
+                    &lt;!-- This is used when "catching" the rewrite above --&gt;
+                    &lt;frontName&gt;shopping&lt;/frontName&gt;
+                &lt;/args&gt;
+            &lt;/App_Shopping&gt;
+        &lt;/routers&gt;
+    &lt;/frontend&gt;
+&lt;/config&gt;</pre>
+</div>
+</div>
+3、改写你自己的控制器
+/app/code/local/App/Shopping/controllers/CartController.php
+请将下面的代码添加到你的控制器中，我们唯一修改的地方是在index动作中添加一个error_log();
+<div>
+<div>
+<pre>&lt; ?php
+# 控制器不会自动加载，所以我们需要包含文件，这里与区块(Block)不一样
+require_once 'Mage/Checkout/controllers/CartController.php';
+class App_Shopping_CartController extends Mage_Checkout_CartController
+{
+    #覆写indexAction方法
+    public function indexAction()
+    {
+        # Just to make sure
+        error_log('耶～成功重写购物车！');
+        parent::indexAction();
+    }
+}</pre>
+</div>
+</div>
+在这段代码中，首先是类名，跟前面讲到的区块(Block)一样，我们自己的类名是App_Shopping_CartController继承原先Mage_Checkout_CartController.在indexAction中我们记录了一段信息。
+
+<p>4、修改App_All.xml，激活我们新的Shopping模块</p>
+<div>
+<div>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;config&gt;
+     &lt;modules&gt;
+        &lt;App_Catalog&gt;
+            &lt;active&gt;true&lt;/active&gt;
+            &lt;codePool&gt;local&lt;/codePool&gt;
+        &lt;/App_Catalog&gt;
+        &lt;App_Shopping&gt;
+            &lt;active&gt;true&lt;/active&gt;
+            &lt;codePool&gt;local&lt;/codePool&gt;
+        &lt;/App_Shopping&gt;
+     &lt;/modules&gt;
+&lt;/config&gt;</pre>
+</div>
+</div>
+到这里，清除缓存后，你已经可以看到error_log成功记录了我们的信息，打开页面http://www.wemvc.dev /checkout/cart/，显示的是购物车页面，一切正常，但如果你访问http://www.wemvc.dev/shopping/cart /，你会发现是首页。。。。我们期望的购物车视图还没有出现，如何解决呢？让我们接下来往下看。
+
+<p>5、修改视图文件app&#x2F;design&#x2F;frontend&#x2F;[myinterface]&#x2F;[mytheme]&#x2F;layout&#x2F;checkout.xml<br>在layout标签中，添加下面内容：</p>
+<div>
+<div>
+<pre>	&lt;app_shopping_cart_index&gt;
+        &lt;update handle="checkout_cart_index"/&gt;
+    &lt;/app_shopping_cart_index&gt;</pre>
+</div>
+</div>
+注意，这里的大小写敏感。
+
+<p>到这里基本大功告成，但是，我建议你学习下正则表达式，因为刚刚的代码中，有这么一段：</p>
+<div>
+<div>
+<pre>&lt;from&gt;&lt; ![CDATA[#^/checkout/cart/#]]&gt;&lt;/from&gt;</pre>
+</div>
+</div>
+这里是使用正则表达式进行匹配的。
+
+<p>还有一点，经过尝试，这里是可以支持同模块名覆盖的，例如Magento代码中商品详情页是Mage_Catalog_ProductController::viewAction()，如果我们想重写这个Controller，我们可以这样做：</p>
+<p>a.简历新的目录&#x2F;app&#x2F;code&#x2F;local&#x2F;App&#x2F;Catalog&#x2F;controllers&#x2F;ProductController.php<br>代码如下:</p>
+<div>
+<div>
+<pre>require_once 'Mage/Catalog/controllers/ProductController.php';
+
+<p>&#x2F;**</p>
+<ul>
+<li>Product controller</li>
+<li></li>
+<li>@category   Mage</li>
+<li>@package    Mage_Catalog<br> <em>&#x2F;<br>class App_Catalog_ProductController extends Mage_Catalog_ProductController<br>{<br> &#x2F;</em>*<ul>
+<li>View product action<br>  *&#x2F;<br> public function viewAction()<br> {<br> echo ‘覆盖过的….’;<br> parent::viewAction();<br> }<br>}</pre></div>
+</div>
+b.编辑/app/code/local/App/Catalog/etc/config.xml，代码如下：
+<div>
+<div>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config&gt;
+ &lt;modules&gt;
+ &lt;App_Catalog&gt;
+     &lt;version&gt;0.1.0&lt;/version&gt;
+ &lt;/App_Catalog&gt;
+ &lt;/modules&gt;
+ &lt;global&gt;
+ &lt;!-- This rewrite rule could be added to the database instead --&gt;
+ &lt;rewrite&gt;
+     &lt;!-- This is an identifier for your rewrite that should be unique --&gt;
+     &lt;!-- THIS IS THE CLASSNAME IN YOUR OWN CONTROLLER --&gt;
+     &lt;App_Shopping_cart&gt;
+         &lt;from&gt;&lt;![CDATA[#^/catalog/product/#]]&gt;&lt;/from&gt;
+         &lt;!--
+             - Shopping module matches the router frontname below - checkout_cart
+             matches the path to your controller Considering the router below,
+             "/shopping/cart/" will be "translated" to
+             "/App/Shopping/controllers/CartController.php" (?)
+         --&gt;
+         &lt;to&gt;/catalog/product/&lt;/to&gt;
+     &lt;/App_Shopping_cart&gt;
+ &lt;/rewrite&gt;
+ &lt;blocks&gt;
+     &lt;catalog&gt;
+         &lt;rewrite&gt;
+                 &lt;breadcrumbs&gt;App_Catalog_Block_Breadcrumbs&lt;/breadcrumbs&gt;
+         &lt;/rewrite&gt;
+     &lt;/catalog&gt;
+ &lt;/blocks&gt;
+ &lt;/global&gt;
+ &lt;frontend&gt;
+ &lt;routers&gt;
+     &lt;catalog&gt;
+         &lt;use&gt;standard&lt;/use&gt;
+         &lt;args&gt;
+             &lt;module&gt;App_Catalog&lt;/module&gt;
+             &lt;frontName&gt;catalog&lt;/frontName&gt;
+         &lt;/args&gt;
+     &lt;/catalog&gt;
+ &lt;/routers&gt;
+ &lt;/frontend&gt;
+&lt;/config&gt;</pre>
+</div>
+</div>
+清空缓存，刷新你的商品详情页，看是不是变了，呵呵。但是这个方法有个弊病，你需要把这个模块的所有Controller都复写掉，不然你会遇到比较大的麻烦。说到这，我再介绍一种重写方法.
+仔细看配置文件的写法：
+<div>
+<div>
+<pre>&lt;?xml version="1.0"?&gt;
+&lt;config&gt;
+  &lt;modules&gt;
+ &lt;App_Mycms&gt;
+     &lt;version&gt;0.1.0&lt;/version&gt;
+ &lt;/App_Mycms&gt;
+ &lt;/modules&gt;
+ &lt;frontend&gt;
+ &lt;routers&gt;
+     &lt;mycms&gt;
+         &lt;use&gt;standard&lt;/use&gt;
+         &lt;args&gt;
+             &lt;module&gt;App_Mycms&lt;/module&gt;
+             &lt;frontName&gt;mycms&lt;/frontName&gt;
+         &lt;/args&gt;
+     &lt;/mycms&gt;
+ &lt;/routers&gt;
+ &lt;/frontend&gt;  
+ &lt;global&gt;
+ &lt;routers&gt;
+     &lt;cms&gt;
+         &lt;rewrite&gt;
+             &lt;index&gt;
+                 &lt;to&gt;App_Mycms/index&lt;/to&gt;
+                 &lt;override_actions&gt;true&lt;/override_actions&gt;
+                 &lt;actions&gt;
+                    &lt;noroute&gt;&lt;to&gt;App_Mycms/index/noroute&lt;/to&gt;&lt;/noroute&gt;
+                 &lt;/actions&gt;
+             &lt;/index&gt;
+         &lt;/rewrite&gt;
+     &lt;/cms&gt;
+ &lt;/routers&gt;	 
+ &lt;/global&gt;
+&lt;/config&gt;</pre>
+</div>
+</div>
+综上所述，三种重写方法都各有千秋，关键看你用在什么地方。另外我们在实践中发现，Magento好像不建议你自己的模块名与现有系统中的模块名一 致，例如Mage_Customer是已有的，它的模块名叫Customer，如果你想复写它，那么最好你再建一个App_Customers之类的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="重写Magento模型和动作助手-Model-Helper"><a href="#重写Magento模型和动作助手-Model-Helper" class="headerlink" title="重写Magento模型和动作助手(Model&amp;Helper)"></a>重写Magento模型和动作助手(Model&amp;Helper)</h4><p>我们在改写Magento的过程中，为了实现自己的业务逻辑，难免要改它的业务模型。你可以尝试用模块下的配置文件配置你自己的类，继承你想重写的模型或者助手，然后调用自己的类。现在我们以用户模型为例深入讲解。</p>
+<p>a.首先创建自己的模块文件夹</p>
+<div>
+<div>
+<pre>app/code/local/App/Customer
+app/code/local/App/Customer/etc/config.xml
+app/code/local/App/Customer/Model
+app/code/local/App/Customer/Model/Customer.php</pre>
+</div>
+</div>
+b.修改app/etc/modules/App_All.xml
+<div>
+<div>
+<pre>        &lt;App_Customer&gt;
+            &lt;active&gt;true&lt;/active&gt;
+            &lt;codePool&gt;local&lt;/codePool&gt;
+        &lt;/App_Customer&gt;</pre>
+</div>
+</div>
+c.修改自己的模块配置文件app/code/local/App/Customer/etc/config.xml
+<div>
+<div>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config&gt;
+    &lt;modules&gt;
+        &lt;App_Customer&gt;
+            &lt;version&gt;0.1.0&lt;/version&gt;
+        &lt;/App_Customer&gt;
+    &lt;/modules&gt;
+
+<pre><code>&amp;lt;global&amp;gt;
+    &amp;lt;models&amp;gt;
+        &amp;lt;customer&amp;gt;
+            &amp;lt;rewrite&amp;gt;
+                &amp;lt;customer&amp;gt;App_Customer_Model_Customer&amp;lt;/customer&amp;gt;
+            &amp;lt;/rewrite&amp;gt;
+        &amp;lt;/customer&amp;gt;
+    &amp;lt;/models&amp;gt;
+&amp;lt;/global&amp;gt;
+</code></pre>
+<p>&lt;&#x2F;config&gt;</pre></p>
+</div>
+</div>
+d.现在写你新的Model，在文件app/code/local/App/Customer/Model/Customer.php中新建类App_Customer_Model_Cutomer
+<div>
+<div>
+<pre>class App_Customer_Model_Customer extends Mage_Customer_Model_Customer {
+    // 重写已存在的方法
+    public function validate() {
+        // Define new validate rules. From now magento call this validate method instead of existing method
+        //return $errors;
+        return true;
+    }
+
+<pre><code>// 你还可以创建新的方法
+public function newMethod() &#123;
+    // function logic
+&#125;
+</code></pre>
+<p>}</pre></p>
+</div>
+</div>
+e.我们再重写一个类，以加深理解。接下来我们重写Customer Address Model。 跟重写Customer Model一样，我们先编辑模块的配置文件app/code/local/App/Customer/etc/config.xml。
+<div>
+<div>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config&gt;
+    &lt;modules&gt;
+        &lt;App_Customer&gt;
+            &lt;version&gt;0.1.0&lt;/version&gt;
+        &lt;/App_Customer&gt;
+    &lt;/modules&gt;
+
+<pre><code>&amp;lt;global&amp;gt;
+    &amp;lt;models&amp;gt;
+        &amp;lt;customer&amp;gt;
+            &amp;lt;rewrite&amp;gt;
+                &amp;lt;customer&amp;gt;App_Customer_Model_Customer&amp;lt;/customer&amp;gt;
+                &amp;lt;address&amp;gt;App_Customer_Model_Address&amp;lt;/address&amp;gt;
+            &amp;lt;/rewrite&amp;gt;
+        &amp;lt;/customer&amp;gt;
+    &amp;lt;/models&amp;gt;
+&amp;lt;/global&amp;gt;
+</code></pre>
+<p>&lt;&#x2F;config&gt;</pre></p>
+</div>
+</div>
+上面看出来了么，rewrite标签内的customer和address其实就是你要覆写的magento model。
+接下来创建model class App_Customer_Model_Address，并写你要覆盖和新增的方法
+<div>
+<div>
+<pre>class App_Customer_Model_Address extends Mage_Customer_Model_Address {
+    // 重写已存在的方法
+    public function validate() {
+        // Define new validate rules. From now magento call this validate method instead of existing method
+        //return $errors;
+        return true;
+    }
+
+<pre><code>// 你还可以创建新的方法
+public function newMethod() &#123;
+    // function logic
+&#125;
+</code></pre>
+<p>}</pre></p>
+</div>
+</div>
+f.我再讲下如何覆盖Magento的模型资源，这里以复写Address Entity Model class为例，我们先来修改模块的配置文件app/code/local/App/Customer/etc/config.xml。
+<div>
+<div>
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;config&gt;
+    &lt;modules&gt;
+        &lt;App_Customer&gt;
+            &lt;version&gt;0.1.0&lt;/version&gt;
+        &lt;/App_Customer&gt;
+    &lt;/modules&gt;
+
+<pre><code>&amp;lt;global&amp;gt;
+    &amp;lt;models&amp;gt;
+        &amp;lt;customer&amp;gt;
+            &amp;lt;rewrite&amp;gt;
+                &amp;lt;customer&amp;gt;App_Customer_Model_Customer&amp;lt;/customer&amp;gt;
+                &amp;lt;address&amp;gt;App_Customer_Model_Address&amp;lt;/address&amp;gt;
+            &amp;lt;/rewrite&amp;gt;
+        &amp;lt;/customer&amp;gt;
+        &amp;lt;customer_entity&amp;gt;
+            &amp;lt;rewrite&amp;gt;
+                &amp;lt;address&amp;gt;App_Customer_Model_Entity_Address&amp;lt;/address&amp;gt;
+            &amp;lt;/rewrite&amp;gt;
+        &amp;lt;/customer_entity&amp;gt;
+    &amp;lt;/models&amp;gt;
+&amp;lt;/global&amp;gt;
+</code></pre>
+<p>&lt;&#x2F;config&gt;</pre></p>
+</div>
+</div>
+接下来创建类文件。
+<div>
+<div>
+<pre>class App_Customer_Model_Entity_Address extends Mage_Customer_Model_Entity_Address {
+    protected function _afterSave(Varien_Object $address) {
+        // Write your code
+    }
+}</pre>
+</div>
+</div>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>在本章中我们学习了如何重写模块、重写控制器、重写区块，以及如何重写模型和助手，基本重写Magento代码对你来说已经不是难事了。文章至此， 要恭喜你，你已经掌握了大部分修改Magento的技能。下面的文章我们会进行更深入的研究。最后感谢所有Sasacake Team  Member，是他们对待工作的热情和责任感促使我写这些教程。</p>
+<p>原文链接：<a href="http://www.wemvc.com/1187.html">http://www.wemvc.com/1187.html</a></p>
+</div>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/1895.html" data-id="clqs2w2qv001xqci5720x2ac0" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/1895.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/magento/" rel="tag">magento</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%95%99%E7%A8%8B/" rel="tag">教程</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/1897.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          深入理解Magento－第十章－数据操作&amp;数据收集器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/1844.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">为何远行</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  <div id="search-form-wrap">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.foolbird.net"></form>
+  </div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2006 - 2023 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/history" class="mobile-nav-link">History</a>
+  
+  
+    <a class="mobile-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'makerwang';
+  
+  var disqus_url = 'https://blog.foolbird.net/1895.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用PHP收发邮件 | Maker&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这两天都在测试邮件, 搞得头都大了, 现在技术问题都已经解决了, 记录一下. 发送邮件一直都是一个难题, 以前没用过mail函数, 因为多数的环境下都不支持, 曾经改写过Discuz的邮件类, 也用过像PHPMailer这样的邮件发送库来解决邮件发送的问题, 但实际上用的都是SMTP. 昨天bobhero在公司内网服务器上配置了sendmail, 简单配置了之后可以使用smtp, imap和pop">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用PHP收发邮件">
+<meta property="og:url" content="https://blog.foolbird.net/787.html">
+<meta property="og:site_name" content="Maker&#39;s Blog">
+<meta property="og:description" content="这两天都在测试邮件, 搞得头都大了, 现在技术问题都已经解决了, 记录一下. 发送邮件一直都是一个难题, 以前没用过mail函数, 因为多数的环境下都不支持, 曾经改写过Discuz的邮件类, 也用过像PHPMailer这样的邮件发送库来解决邮件发送的问题, 但实际上用的都是SMTP. 昨天bobhero在公司内网服务器上配置了sendmail, 简单配置了之后可以使用smtp, imap和pop">
+<meta property="og:locale">
+<meta property="article:published_time" content="2008-09-09T05:59:13.000Z">
+<meta property="article:modified_time" content="2023-12-30T06:45:52.790Z">
+<meta property="article:author" content="王默">
+<meta property="article:tag" content="imap">
+<meta property="article:tag" content="邮件">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@m4ker">
+  
+    <link rel="alternative" href="/atom.xml" title="Maker&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <!--
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Maker&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我相信, 太阳地下有很多值得去的地方, 最近的就在我们心中.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/history">History</a>
+        
+        
+          <a class="main-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-787" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用PHP收发邮件
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/787.html" class="article-date">
+  <time datetime="2008-09-09T05:59:13.000Z" itemprop="datePublished">2008-09-09</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这两天都在测试邮件, 搞得头都大了, 现在技术问题都已经解决了, 记录一下.</p>
+<p>发送邮件一直都是一个难题, 以前没用过mail函数, 因为多数的环境下都不支持, 曾经改写过<a href="http://www.discuz.com/" title="一款优秀的国产php论坛系统">Discuz</a>的邮件类, 也用过像<a href="http://phpmailer.codeworxtech.com/" title="phpmailer project">PHPMailer</a>这样的邮件发送库来解决邮件发送的问题, 但实际上用的都是SMTP. 昨天<a href="http://www.bobhero.net/">bobhero</a>在公司内网服务器上配置了sendmail, 简单配置了之后可以使用smtp, imap和pop3. 但按照网上的教程配置了之后php的mail()函数一直都无法发送邮件, 在搜索引擎上寻找很久没有结果, 最后bobhero重新编译了配置文件, 终于成功.</p>
+<p>编译命令</p>
+<pre>make -C /etc/mail</pre>
+
+<p>收邮件要比发邮件复杂的多, 网上资源巨少, 好不容易有几篇英文的帖子和我情况类似也没有解决办法.</p>
+<p>接受邮件使用php的imap库, 遇到的问题主要在imap_open()上</p>
+<p>连接163使用</p>
+<pre>imap_open("{pop3.163.com:110/pop3}INBOX", $username, $password);</pre>
+
+<p>取得的7bit数据使用imap_qprint()解码.</p>
+<p>连接gmail使用</p>
+<pre>imap_open("imap.gmail.com:993/imap/ssl", $username, $password);</pre>
+
+<p>最难弄的就是连接本地的imap服务器, Outlook是可以从服务器上收取邮件的, 但是php就是收不到并返回错误<span style="color: #ff0000;">Certificate failure for 102.com: Self-signed certificate or untrusted authority: OU&#x3D;IMAP server, CN&#x3D;imap.example.com, E&#x3D;<a href="mailto:&#x70;&#111;&#x73;&#116;&#109;&#97;&#x73;&#116;&#x65;&#x72;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#99;&#111;&#x6d;">&#x70;&#111;&#x73;&#116;&#109;&#97;&#x73;&#116;&#x65;&#x72;&#x40;&#x65;&#x78;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#99;&#111;&#x6d;</a></span>, 使用telnet链接也没有问题, 从昨天下午研究到今天中午也没解决这个错误, 网上搜不到解决办法, 最后实在没办法了, 用<a href="http://www.xdowns.com/soft/1/78/2006/soft_34204.html" title="一款抓包工具">IP Sniffer</a>截php.exe的数据包, 然后用telnet进行模拟, 发现php.exe在和imap服务器链接成功之后使用了TLS(一个什么传输安全协议), 刚想放弃就在<a href="http://cn2.php.net/manual/en/function.imap-open.php" title="imap_open function">php.net</a>上看到原来imap_open()还有一个参数是&#x2F;notls, 我的天, 终于得救了.</p>
+<pre>imap_open("{localhost:143/imap/notls}INBOX", $username, $password);</pre>
+
+<p>研究期间发现telnet很好玩, 可以用telnet检查某项服务是否开启, 比如smtp, telnet 192.168.1.102 25, 如果服务是开启的就会建立一个连接, 可以用指令进行smtp 的相关操作, 而指令内容也就是smtp协议的相关内容, 其他协议pop, imap等等都可以这么玩.</p>
+<p><strong>相关端口:</strong></p>
+<p>smtp 协议 25端口</p>
+<p>imap 协议 143端口</p>
+<p>imap&#x2F;ssl 993端口</p>
+<p>imap&#x2F;ssl&#x2F;novalidate-cert 995端口</p>
+<p>nntp协议 119端口</p>
+<p><strong>相关资源:</strong></p>
+<p>中国协议分析网 <a href="http://www.cnpaf.net/" title="中国协议分析网">http://www.cnpaf.net/</a></p>
+<p>RFC文档 <a href="http://www.faqs.org/rfcs/">http://www.faqs.org/rfcs/</a></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/787.html" data-id="clqs2w2t000avqci53r5ce8vq" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/787.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/imap/" rel="tag">imap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%82%AE%E4%BB%B6/" rel="tag">邮件</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/792.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          url重写后的路径问题
+        
+      </div>
+    </a>
+  
+  
+    <a href="/786.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">保留用户输入的错误数据</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  <div id="search-form-wrap">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.foolbird.net"></form>
+  </div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2006 - 2023 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/history" class="mobile-nav-link">History</a>
+  
+  
+    <a class="mobile-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'makerwang';
+  
+  var disqus_url = 'https://blog.foolbird.net/787.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>
