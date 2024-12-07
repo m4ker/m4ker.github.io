@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>深入理解Magento – 第六章 – 高级Magento模型 | Maker&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="深入理解Magento作者：Alan Storm翻译：Hailong Zhang 第六章 – 高级Magento模型我们讲过Magento有两种模型，简单模型和EAV（Entity Attribute  Value）模型。上一章我们讲过所有的Magento模型都是继承自Mage_Core_Model_Abstract &#x2F;  Varien_Object。简单模型和EAV模型的区别在于资源模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解Magento – 第六章 – 高级Magento模型">
+<meta property="og:url" content="https://blog.foolbird.net/1758.html">
+<meta property="og:site_name" content="Maker&#39;s Blog">
+<meta property="og:description" content="深入理解Magento作者：Alan Storm翻译：Hailong Zhang 第六章 – 高级Magento模型我们讲过Magento有两种模型，简单模型和EAV（Entity Attribute  Value）模型。上一章我们讲过所有的Magento模型都是继承自Mage_Core_Model_Abstract &#x2F;  Varien_Object。简单模型和EAV模型的区别在于资源模">
+<meta property="og:locale">
+<meta property="og:image" content="http://www.zhlmmc.com/wp-content/uploads/2010/04/eav.png">
+<meta property="article:published_time" content="2011-10-22T06:20:40.000Z">
+<meta property="article:modified_time" content="2023-12-30T06:45:52.786Z">
+<meta property="article:author" content="王默">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.zhlmmc.com/wp-content/uploads/2010/04/eav.png">
+<meta name="twitter:creator" content="@m4ker">
+  
+    <link rel="alternative" href="/atom.xml" title="Maker&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <!--
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+<meta name="generator" content="Hexo 7.0.0"></head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Maker&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我相信, 太阳地下有很多值得去的地方, 最近的就在我们心中.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/history">History</a>
+        
+        
+          <a class="main-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-1758" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      深入理解Magento – 第六章 – 高级Magento模型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/1758.html" class="article-date">
+  <time datetime="2011-10-22T06:20:40.000Z" itemprop="datePublished">2011-10-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="深入理解Magento"><a href="#深入理解Magento" class="headerlink" title="深入理解Magento"></a>深入理解Magento</h1><p>作者：<a href="http://alanstorm.com/">Alan Storm</a><br>翻译：<a href="http://www.zhlmmc.com/">Hailong Zhang</a></p>
+<h3 id="第六章-–-高级Magento模型"><a href="#第六章-–-高级Magento模型" class="headerlink" title="第六章 – 高级Magento模型"></a>第六章 – 高级Magento模型</h3><p>我们讲过Magento有两种模型，简单模型和EAV（Entity Attribute  Value）模型。上一章我们讲过所有的Magento模型都是继承自Mage_Core_Model_Abstract &#x2F;  Varien_Object。简单模型和EAV模型的区别在于资源模型（Model  Resource）。虽然所有的资源模型都最终继承“Mage_Core_Model_Resrouce_Abstract”，但是简单模型是直接继承 “Mage_Core_Model_Mysql4_Abstract”，而EAV模型是直接继承 “Mage_Eav_Model_Entity_Abstract”。</p>
+<p>Magento这么做是由它的道理的。对于大部分开发人员或者用户来说，他们只需要知道一系列的方法能够操作模型，获得数据，数据到底是如何存储的并不是很重要。</p>
+<h4 id="什么是EAV模型？"><a href="#什么是EAV模型？" class="headerlink" title="什么是EAV模型？"></a>什么是EAV模型？</h4><p>Wikipedia是这么定义的：<br><em>EAV（Entity-Attribute-Value）模型，也作Object-Attribute-Value模型或者开放模型是一种数据模型。这种数据模型常常用在一个对象的属性数目不是一定的情况下。在数学上，这种模型称为松散矩阵。</em></p>
+<p>换一种方式理解，EAV模型就是数据表的一种泛化。在传统的数据库中，数据表的列的数量是一定的<br>+——————+<br>| products         |<br>+——————+<br>| product_id       |<br>| name             |<br>| price            |<br>| etc..            |<br>+——————+<br>+————+—————-+——————+———+<br>| product_id | name           | price            | etc…  |<br>+————+—————-+——————+———+<br>| 1          | Widget A       | 11.34            | etc…  |<br>+————+—————-+——————+———+<br>| 2          | Dongle B       | 6.34             | etc…  |<br>+————+—————-+——————+———+<br>在上面这张表中，每一个商品都有名称，价格等等。</p>
+<p>在EAV模型中，每一个模型都有不同的属性。这对于电子商务的应用来说是很合适的。比如说一个网店可以卖笔记本，拥有CPU速度，颜色，内存等属性，但是 网店也可以卖衣服，有颜色属性，但是没有CPU速度。即使是卖衣服的网店，也有上衣和裤子之分，它们的属性也是不一样的。</p>
+<p>有很多开源的或者商业的数据库是默认使用EAV模型的。但是一般的网站托管平台不提供这些数据库。所以Varien开发了一套基于PHP和MySQL的EAV系统。换句话说，它们在传统的关系型数据库上面开发了一套EAV数据库系统。</p>
+<p>在使用的时候，EAV模型的属性是会分布在不同的MySQL数据表中。<br><a href="http://www.zhlmmc.com/wp-content/uploads/2010/04/eav.png"><img src="http://www.zhlmmc.com/wp-content/uploads/2010/04/eav.png" title="eav"></a><br>上面的这张图是Magento中关于“catalog_product”的表。每一个产品都是“catalog_product_entity”中的一 行。Magento系统中所有的属性（不仅仅是商品）都存放在“eav_attribute”表中，而属性的值都放在类似下面的表中 “catalog_product_entity_attribute_varchar”，  “catalog_product_entity_attribute_decimal”，  “catalog_product_entity_attribute_etc”。【译者注：如果你仔细观察上面这幅数据表结构图，你会发现明显少了一张 表，和“entity_type”有关。因为这里有“entity_type_id”出现，但却没有定义这个属性的表。这个表在Magneto中叫做 “eav_entity_type”。由于EAV模型中所有的模型数据都混在一套数据表中了，实体类型（entity_type）就是用来把不同的模型区 别开来的属性。假如我们要找出系统中所有的产品数据，那么Magento先通过“eav_entity_type”表获得产品模型的 “entity_type_id”，然后再通过上面这幅图的关系来拿到所有的数据。<br>】</p>
+<p>在EAV系统下面，当你需要添加一个属性的时候，只需要在“eav_attribute”表中添加一行就行了。而传统的关系型数据库则需要修改数据表调用 “ALTER  TABLE”语句，复杂而且有风险。EAV模型的缺点是你不能通过一个简单的SQL语句就获得一个模型的所有属性。你往往需要调用多个SQL或者一个 SQL包干了多个join语句。</p>
+<h4 id="实战EAV模型"><a href="#实战EAV模型" class="headerlink" title="实战EAV模型"></a>实战EAV模型</h4><p>我们已经介绍了EAV是怎么工作的了。下面我们要通过一个例子来说明要在Magento中创建一个EAV模型所需要的步骤。这部分内容大概是 Magento中最令人头疼的部分，95%的Magento用户都不会和这些代码打交道，但是理解EAV模型的原理能够帮助你更好的理解Magento的 代码和架构。</p>
+<p>因为EAV模型的内容太多了，所以我假设你已经熟悉了前几章的内容，包括Magento MVC，组类名等等。在这一章我不会再重复这些内容。</p>
+<h4 id="EAV形式的Hello-World"><a href="#EAV形式的Hello-World" class="headerlink" title="EAV形式的Hello World"></a>EAV形式的Hello World</h4><p>我们将为Hello World模块创建另外一个模型，使用EAV形式的资源模型。首先我们为模块创建一个新的模型叫做“Eavblogpost”。记住，简单模型和EAV模型的区别是资源模型，所以我们创建一个模型的基本步骤是一样的。<br><global><br>&lt;!– … –&gt;<br><models><br>&lt;!– … –&gt;<br><helloworld-eav><br><class>Zhlmmc_Helloworld_Model</class><br><resourceModel>helloworld-eav_mysql4</resourceModel><br></helloworld-eav><br>&lt;!– … –&gt;<br></models><br>&lt;!– … –&gt;<br></global><br>我想我不说你也应该知道，我们要创建一个新的模型文件。由于PHP  5.3和命名空间（namespaces）还没有被广泛采用，Magento中的类名仍然和文件的物理路径相关。这就导致了很多时候不知道一个URI所对 应的类究竟该放在什么文件夹下面。我发现我们可以利用Magento的异常信息来直接得到一个类的路径。比如，这里我们先不创建模型类，先来修改 BlogController来直接使用模型类，这样Magento就会报错说找不到模型类，并给出路径<br>public function eavReadAction(){<br>$eavModel &#x3D; Mage::getModel(&#039;helloworld-eav&#x2F;eavblogpost&#039;);<br>echo get_class($eavModel).”<br>“;<br>}<br>清空Magento缓存，访问以下URL<br><a href="http://127.0.0.1/Magento/helloworld/blog/eavRead">http://127.0.0.1/Magento/helloworld/blog/eavRead</a><br>跟预计的一样，你应该得到以下异常<br>Warning: include(Zhlmmc&#x2F;Helloworld&#x2F;Model&#x2F;Eavblogpost.php) [function.include]: failed to open stream: No such file or directory<br>所以我们应该创建如下文件<br>File: app&#x2F;code&#x2F;local&#x2F;Zhlmmc&#x2F;Helloworld&#x2F;Model&#x2F;Eavblogpost.php<br>class Zhlmmc_Helloworld_Model_Eavblogpost extends Mage_Core_Model_Abstract<br>{<br>protected function _construct()<br>{<br>$this-&gt;_init(&#039;helloworld-eav&#x2F;blogpost&#039;);<br>}<br>}<br>刷新页面，你应该看到下面的输出<br>Zhlmmc_Helloworld_Model_Eavblogpost<br>下面我们来创建资源模型。先定义资源模型<br><helloworld-eav_mysql4><br><class>Zhlmmc_Helloworld_Model_Resource_Eav_Mysql4</class><br><entities><br><blogpost></p>
+<table>eavblog_posts</table>
+</blogpost>
+</entities>
+</helloworld-eav_mysql4>
+这里的标签名字和我们上面定义的模型的<resourceMode />是一致的。<entities />的定义和上一章是一样的。下面的适配器的定义
+<resources>
+<!– … ->
+<helloworld-eav_write>
+<connection>
+<use>default_write</use>
+</connection>
+</helloworld-eav_write>
+<helloworld-eav_read>
+<connection>
+<use>default_read</use>
+</connection>
+</helloworld-eav_read>
+</resources>
+然后再次利用Magento的异常，先修改“eavReadAction”
+public function eavReadAction(){
+$eavModel = Mage::getModel(&#039;helloworld-eav/eavblogpost&#039;);
+$params = $this->getRequest()->getParams();
+echo("Loading the blogpost with an ID of ".$params[&#039;id&#039;]."
+");
+$eavModel->load($params[&#039;id&#039;]);
+$data = $eavModel->getData();
+var_dump($data);
+}
+清空Magento缓存，访问URL
+http://127.0.0.1/Magento/helloworld/blog/eavRead/id/1
+你应该看到如下异常
+Warning:  include(Zhlmmc/Helloworld/Model/Resource/Eav/Mysql4/Blogpost.php)  [function.include]: failed to open stream: No such file or directory
+所以我们创建相应的资源模型类
+File: app/code/local/Zhlmmc/Helloworld/Model/Resource/Eav/Mysql4/Blogpost.php
+class Zhlmmc_Helloworld_Model_Resource_Eav_Mysql4_Blogpost extends Mage_Eav_Model_Entity_Abstract
+{
+public function _construct()
+{
+$resource = Mage::getSingleton(&#039;core/resource&#039;);
+$this->setType(&#039;helloworld_eavblogpost&#039;);
+$this->setConnection(
+$resource->getConnection(&#039;helloworld-eav_read&#039;),
+$resource->getConnection(&#039;helloworld-eav_write&#039;)
+);
+}
+}
+这个类和简单的资源模型就不一样。首先，我们这里继承的是“Mage_Eav_Model_Entity_Abstract”。其次，我们没有调用 “_init”方法。在EAV模型中我们需要自己来完成资源模型初始化的过程，包括，告诉资源模型使用哪个适配器，以及实体类型 （entity_type）。刷新URL，你应该看到如下异常
+Invalid entity_type specified: helloworld_eavblogpost
+根据我们上文所讲的内容，那这个异常的原因很明显，那就是“eav_entity_type”表中，没有需要的 “helloworld_eavblogpost”的数据。这里的“helloworld_eavblogpost”就是我们“setType”的参数。 让我们来看一下这张表长什么样
+mysql> select * from eav_entity_type\G
+*************************** 1\. row ***************************
+entity_type_id: 1
+entity_type_code: customer
+entity_model: customer/customer
+attribute_model:
+entity_table: customer/entity
+value_table_prefix:
+entity_id_field:
+is_data_sharing: 1
+data_sharing_key: default
+default_attribute_set_id: 1
+increment_model: eav/entity_increment_numeric
+increment_per_store: 0
+increment_pad_length: 8
+increment_pad_char: 0
+additional_attribute_table: customer/eav_attribute
+entity_attribute_collection: customer/attribute_collection
+*************************** 2\. row ***************************
+entity_type_id: 2
+entity_type_code: customer_address
+entity_model: customer/customer_address
+attribute_model:
+entity_table: customer/address_entity
+value_table_prefix:
+entity_id_field:
+is_data_sharing: 1
+data_sharing_key: default
+default_attribute_set_id: 2
+increment_model:
+increment_per_store: 0
+increment_pad_length: 8
+increment_pad_char: 0
+additional_attribute_table: customer/eav_attribute
+entity_attribute_collection: customer/attribute_collection
+正如我们前面讲过的，这张表包含了所有系统中的实体类型。我们的参数“helloworld_eavblogpost”就是实体类型的值，对应数据表列“entity_type_code”。
+
+<h4 id="系统和应用程序"><a href="#系统和应用程序" class="headerlink" title="系统和应用程序"></a>系统和应用程序</h4><p>这一章讲的内容是Magento最重要的一个概念，也是很多人觉得头疼的概念。拿电脑来做比方。操作系统，比如Mac OS  X，Windows，Linux等等，是软件系统，而浏览器，比如FIrefox，Safari，IE等等是应用程序。Magento首先是一个系统，其 次才是一个应用程序。你可以在Magento系统之上创建一个电子商务应用。令人感到困惑的是Magento的代码在很多地方是以很原始的方式暴露给应用 程序的。EAV系统的配置和你网店的数据存放在统一数据库中就是一个例子。</p>
+<p>随着你越来越深入Magento，你需要把Magento当作老式的 IBM 650 机器。也就是说，你必须对Magento有很深的了解才能对它运用自如。【译者注：这一段和上下文没什么关系，大概是作者有感而发】</p>
+<h4 id="创建资源配置"><a href="#创建资源配置" class="headerlink" title="创建资源配置"></a>创建资源配置</h4><p>从理论上讲，你可以手动的在数据库中插入数据，让我们的EAV模型工作，但我还是不建议你这么做。所幸的是，Magento提供了一个特殊的资源配置类，包含了一些有用的方法能自动的创建一些数据，使得系统能工作。</p>
+<p>我们先添加资源配置<br><resources><br>&lt;!– … –&gt;<br><helloworld-eav_setup><br><setup><br><module>Zhlmmc_Helloworld</module><br><class>Zhlmmc_Helloworld_Model_Entity_Setup</class><br></setup><br><connection><br><use>core_setup</use><br></connection><br></helloworld-eav_setup><br>&lt;!– … –&gt;<br></resources><br>创建资源配置类文件<br>File: app&#x2F;code&#x2F;local&#x2F;Zhlmmc&#x2F;Helloworld&#x2F;Model&#x2F;Entity&#x2F;Setup.php<br>class Zhlmmc_Helloworld_Model_Entity_Setup extends Mage_Eav_Model_Entity_Setup {<br>}<br>请注意，这里我们继承的父类是“Mage_Eav_Model_Entity_Setup”。最后，我们来创建安装脚本。如果你不熟悉这部分内容，请你参考前面章节的内容。<br>File: app&#x2F;code&#x2F;local&#x2F;Zhlmmc&#x2F;Helloworld&#x2F;sql&#x2F;helloworld-eav_setup&#x2F;mysql4-install-0.1.0.php<br><?php
+$installer = $this;
+throw new Exception("This is an exception to stop the installer from completing");
+?><br>清空Magento缓存，访问任何页面，你应该看到以上异常。如果你没有看到异常，那说明你哪里配置错了。</p>
+<p>请注意：我们将一步一步的创建安装脚本。如果你阅读了前面的章节，你应该知道我们必须删除“core_resource”数据表中的相应数据才能使得安装 脚本重新运行。所以在我们下面的例子中，当我们修改了安装脚本，我们都默认会删除“core_resource”表中的数据。正常使用Magento的时 候我们不需要这样做的，教程中的例子是极端情况。</p>
+<h4 id="添加实体类型"><a href="#添加实体类型" class="headerlink" title="添加实体类型"></a>添加实体类型</h4><p>首先我们修改安装脚本如下<br>$installer &#x3D; $this;<br>$installer-&gt;addEntityType(&#039;helloworld_eavblogpost&#039;,Array(<br>&#x2F;&#x2F;entity_mode is the URL you&#039;d pass into a Mage::getModel() call<br>&#039;entity_model&#039;          &#x3D;&gt;&#039;helloworld-eav&#x2F;eavblogpost&#039;,<br>&#x2F;&#x2F;blank for now<br>&#039;attribute_model&#039;       &#x3D;&gt;&#039;&#039;,<br>&#x2F;&#x2F;table refers to the resource URI helloworld-eav&#x2F;blogpost<br>&#x2F;&#x2F;<helloworld-eav_mysql4>…<blogpost><table>eavblog_posts</table><br>&#039;table&#039;         &#x3D;&gt;&#039;helloworld-eav&#x2F;blogpost&#039;,<br>&#x2F;&#x2F;blank for now, but can also be eav&#x2F;entity_increment_numeric<br>&#039;increment_model&#039;       &#x3D;&gt;&#039;&#039;,<br>&#x2F;&#x2F;appears that this needs to be&#x2F;can be above “1” if we&#039;re using eav&#x2F;entity_increment_numeric<br>&#039;increment_per_store&#039;   &#x3D;&gt;&#039;0&#039;<br>));<br>我们调用了资源配置对象的“addEntityType”方法。这个方法的参数是实体类型（helloworld_eavblogpost）还有和这个类 型相关的参数。当你运行这个脚本以后，你会发现“eav_attribute_group”，“eav_attributeset”还有 “eav_entity_type”数据表中有了新的数据。访问以下URL<br><a href="http://127.0.0.1/Magento/helloworld/blog/eavRead/id/1">http://127.0.0.1/Magento/helloworld/blog/eavRead/id/1</a><br>你应该看到以下异常<br>SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;zend-magento.eavblog_posts&#039; doesn&#039;t exist</p>
+<h4 id="创建数据表"><a href="#创建数据表" class="headerlink" title="创建数据表"></a>创建数据表</h4><p>我们已经告诉Magento我们的实体类型。接下来，我们要创建用来存储数据的数据表，并配置系统让Magento知道我们要用这些表。</p>
+<p>如果你研究过Magento核心模块的资源配置脚本的话，比如core&#x2F;Mage&#x2F;CatalogInventory的配置脚本，你会看到很多用来创建数 据表的SQL语句。所幸的是，我们已经不必要这样做了。Magento提供的资源配置类有一个方法“createEntityTables”。我们可以用 这个方法来创建我们需要的数据表。同时这个方法也会在Magento的系统数据表中添加相应的配置数据。<br>$installer-&gt;createEntityTables(<br>$this-&gt;getTable(&#039;helloworld-eav&#x2F;blogpost&#039;)<br>);<br>“createEntityTables”有两个参数。第一个参数是基础表名（base table  name）。第二个参数是一系列选项。我们这里忽略了第二个参数，这些参数都是一些高级配置，超出了我们讨论的范围。在运行了上述脚本以后，你会发现数据 库中添加了如下数据表<br>eavblog_posts<br>eavblog_posts_datetime<br>eavblog_posts_decimal<br>eavblog_posts_int<br>eavblog_posts_text<br>eavblog_posts_varchar<br>同时，你会发现在“eav_attribute_set”表中多了一条数据<br>mysql&gt; select * from eav_attribute_set order by attribute_set_id DESC LIMIT 1 \G<br>*************************** 1. row ***************************<br>attribute_set_id: 63<br>entity_type_id: 31<br>attribute_set_name: Default<br>sort_order: 3<br>清空Magento缓存，重新访问如下URL<br><a href="http://127.0.0.1/Magento/helloworld/blog/eavRead/id/1">http://127.0.0.1/Magento/helloworld/blog/eavRead/id/1</a><br>你应该看到以下输出<br>Loading the blogpost with an ID of 1<br>array(0) { }</p>
+<h4 id="添加属性"><a href="#添加属性" class="headerlink" title="添加属性"></a>添加属性</h4><p>创建资源配置的最后一步是告诉Magento我们的模型有哪些属性。这就和为单独的数据表添加列是一样的。【译者注：我们上面的输出是空的就是因为 我们虽然创建了EAV数据表，但是却没有创建EAV属性，就像创建了一张没有任何列的数据表，当然是空的。】和上面的步骤一样，Magento的资源配置 类提供了相应的帮助函数，“installEntities”和“getDefaultEntities”。</p>
+<p>我们之前所做的是告诉Magento，我们创建了一个实体类型（Entity  Type），而现在，我们要配置这个实体类型使它能够和我们的模型相符合。这个方法名字有点搞“installEntities”，其实我们要做的是配置 这个实体。修改类“Zhlmmc_Helloworld_Model_Setup_Entity_Setup”<br>class Zhlmmc_Helloworld_Model_Setup_Entity_Setup extends Mage_Eav_Model_Entity_Setup {<br>public function getDefaultEntities()<br>{<br>return array (<br>&#039;helloworld_eavblogpost&#039; &#x3D;&gt; array(<br>&#039;entity_model&#039;      &#x3D;&gt; &#039;helloworld-eav&#x2F;eavblogpost&#039;,<br>&#039;attribute_model&#039;   &#x3D;&gt; &#039;&#039;,<br>&#039;table&#039;             &#x3D;&gt; &#039;helloworld-eav&#x2F;blogpost&#039;,<br>&#039;attributes&#039;        &#x3D;&gt; array(<br>&#039;title&#039; &#x3D;&gt; array(<br>&#x2F;&#x2F;the EAV attribute type, NOT a mysql varchar<br>&#039;type&#039;              &#x3D;&gt; &#039;varchar&#039;,<br>&#039;backend&#039;           &#x3D;&gt; &#039;&#039;,<br>&#039;frontend&#039;          &#x3D;&gt; &#039;&#039;,<br>&#039;label&#039;             &#x3D;&gt; &#039;Title&#039;,<br>&#039;input&#039;             &#x3D;&gt; &#039;text&#039;,<br>&#039;class&#039;             &#x3D;&gt; &#039;&#039;,<br>&#039;source&#039;            &#x3D;&gt; &#039;&#039;,<br>&#x2F;&#x2F; store scope &#x3D;&#x3D; 0<br>&#x2F;&#x2F; global scope &#x3D;&#x3D; 1<br>&#x2F;&#x2F; website scope &#x3D;&#x3D; 2<br>&#039;global&#039;            &#x3D;&gt; 0,<br>&#039;visible&#039;           &#x3D;&gt; true,<br>&#039;required&#039;          &#x3D;&gt; true,<br>&#039;user_defined&#039;      &#x3D;&gt; true,<br>&#039;default&#039;           &#x3D;&gt; &#039;&#039;,<br>&#039;searchable&#039;        &#x3D;&gt; false,<br>&#039;filterable&#039;        &#x3D;&gt; false,<br>&#039;comparable&#039;        &#x3D;&gt; false,<br>&#039;visible_on_front&#039;  &#x3D;&gt; false,<br>&#039;unique&#039;            &#x3D;&gt; false,<br>),<br>),<br>)<br>);<br>}<br>}<br>这里我们构建了一个数组，数组的元素是“key&#x2F;value”对。“key”就是实体类型的名字（以下代码参数是一样的 “$installer-&gt;addEntityType(&#039;helloworld_eavblogpost&#039;,…)”），“value”是一个数 组，用来描述这个实体类型。“value”数组的元素大部分你应该都见过，就不多解释了。这里要关注的是“attribute”元素，这个元素的值又是一 个数组。这个数组的内容就是我们定义的实体类型的属性，相当于普通数据表的列，比如这里的“title”。很可惜，我无法完整解释用来描述一个属性的数组 的内容。在这里，我们只要知道“type”就是这个属性的数据类型“varchar”。也就是说，这个属性的值将会被保存到 “eavblog_posts_varchar”数据表中。其他的很多元素都是和Magento的后台管理有关。Magento很多地方的UI是由模型控 制的，很多这些参数都是用来控制UI显示和系统设置。这样做的优点是灵活性提高，但是缺点是这些内容对于外部开发者都是不透明的。【译者注：我们是可以在 这个函数中返回多个实体类型的。如果返回多个实体类型，那就说明模块拥有多个模型。】</p>
+<p>顺便说一下，Magento选择使用数组嵌套数组的形式来表示实体类型的属性很奇怪。因为Magento整个架构是非常面向对象的。这里的数据结构和系统的其他部分很不一样。</p>
+<p>接下来我们需要修改安装脚本，添加如下代码<br>$installer-&gt;installEntities();<br>“installEntities”会调用“getDefaultEntities”方法来获取将要被配置的属性。当然你也可以把属性直接作为参数传给 “installEntities”，但是我觉得还是按照Magento的习惯来比较好。在调用“installEntitis”以后，Magento会 做下面两件事</p>
+<ol>
+<li>在“eav_attribute”表中添加“title”属性</li>
+<li>在“eav_entity_attribute”表中添加一行<br>清空Magento缓存，刷新页面，你应该看到如下异常<br>SQLSTATE[23000]: Integrity constraint violation: 1217 Cannot delete or update a parent row: a foreign key constraint fails<br>那是因为我们之前已经调用过一次“createEntityTables”，再次调用的时候Magento会尝试先删除数据表，然后再创建。但是删除的时 候Magento没有考虑到外键的关系，先尝试删除了主表，所以就有了以上异常。为了简化教程的例子，我们暂时把 “createEntityTables”语句删了。再次刷新页面，你应该看到正常的输出。</li>
+</ol>
+<h4 id="给EAV模型添加数据"><a href="#给EAV模型添加数据" class="headerlink" title="给EAV模型添加数据"></a>给EAV模型添加数据</h4><p>到这里为止，我们的EAV模型已经创建好了，下面我们来为模型添加一些数据。在BlogController中添加以下方法<br>public function eavPopulateEntriesAction() {<br>for($i&#x3D;0;$i&lt;10;$i++) {<br>$weblog2 &#x3D; Mage::getModel(&#039;helloworld-eav&#x2F;eavblogpost&#039;);<br>$weblog2-&gt;setTitle(&#039;This is a test &#039;.$i);<br>$weblog2-&gt;save();<br>}<br>echo &#039;Done&#039;;<br>}<br>public function eavShowcollectionAction() {<br>$weblog2 &#x3D; Mage::getModel(&#039;helloworld-eav&#x2F;eavblogpost&#039;);<br>$entries &#x3D; $weblog2-&gt;getCollection()-&gt;addAttributeToSelect(&#039;title&#039;);<br>$entries-&gt;load();<br>foreach($entries as $entry)<br>{<br>&#x2F;&#x2F; var_dump($entry-&gt;getData());<br>echo &#039;</p>
+<h1 id="039-entry-getTitle-039"><a href="#039-entry-getTitle-039" class="headerlink" title="&#039;.$entry-&gt;getTitle().&#039;"></a>&#039;.$entry-&gt;getTitle().&#039;</h1><p>&#039;;<br>}<br>echo &#039;<br>Done<br>&#039;;<br>}<br>记得添加模型集合<br>class Zhlmmc_Helloworld_Model_Resource_Eav_Mysql4_Blogpost_Collection extends Mage_Eav_Model_Entity_Collection_Abstract<br>{<br>protected function _construct()<br>{<br>$this-&gt;_init(&#039;helloworld-eav&#x2F;eavblogpost&#039;, &#039;helloworld-eav&#x2F;blogpost&#039;);<br>}<br>}<br>访问以下URL<br><a href="http://127.0.0.1/Magento/helloworld/blog/eavPopulateEntries">http://127.0.0.1/Magento/helloworld/blog/eavPopulateEntries</a><br>你应该看到正确的输出。细心一点的话你应该发现这里有两点比较特殊。第 一，“$weblog2-&gt;getCollection()-&gt;addAttributeToSelect(&#039;title&#039;)”，这里的 “title”是干什么的？因为EAV模型在数据库层面比较复杂，一个简单的查询都需要好多个SQL才能完成。所以在查询的时候你需要指明你想找什么，这 样可以节省系统资源。不过你也可以传入“*”，表示查找所有数据。第二，为什么“$this-&gt;_init”有两个参数？在我们以前的章节中，简单 模型的模型集合初始化的时候只需要传入模型的URI就可以了，为什么这里要两个参数呢？其实如果你仔细看了模型集合抽象类的代码的话，你会发现这样一段<br>if (is_null($resourceModel)) {<br>$resourceModel &#x3D; $model;<br>}<br>所以其实是需要模型的URI和资源模型的URI，但是由于我们前面章节的例子，这两个URI是一样的，所以省略了第二个参数。而这里，资源模型的URI和模型的URI是不一样的，所以不能省略。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>到这里，你应该对Magento整个系统的运作有所了解了。起码下一次你看到网店里面的某个商品部显示了，或者什么属性不对了，你知道去哪里找问题。除了本章介绍的内容以外EAV模型还有很多东西可以学习。下面是我打算在以后的文章中介绍的一些内容</p>
+<ol>
+<li>EAV属性：EAV模型的属性类型不局限于datatime, decimal, int, text和varchar。你可以创建自定义的数据类型。</li>
+<li>集合筛选：对EAV模型的数据进行筛选不是看起来的那么简单，特别是当属性是自定义类型的情况下，我们需要在集合装载之前调用“addAttributeToFilter”方法。</li>
+<li>Magento EAV模型继承：Magento在基本的EAV模型之上又创建了模型的继承关系，这些继承关系可以和网店的功能直接相关，也可以优化EAV模型的查询。<br>毫无疑问，EAV模型是Magento系统中最复杂的部分。不过你要始终相信一点，不管多复杂，它也就是程序。从哲学角度来讲，任何事物的产生都有特定的理由，你只需要搞清楚为什么。</li>
+</ol>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/1758.html" data-id="clqs2w2qp0017qci56jp36d12" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/1758.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/1760.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          深入理解Magento – 第七章 – 自定义Magento系统配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/1756.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">深入理解Magento – 第五章 – Magento资源配置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  <div id="search-form-wrap">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.foolbird.net"></form>
+  </div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2006 - 2023 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/history" class="mobile-nav-link">History</a>
+  
+  
+    <a class="mobile-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'makerwang';
+  
+  var disqus_url = 'https://blog.foolbird.net/1758.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

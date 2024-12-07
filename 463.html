@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>s扫描器下载和说明 | Maker&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="S扫描器是一个简单的使用两种常用的扫描方式进行端口扫描的端口扫描器程序.可实现的功能是:1.两种不同的扫描方式(SYN扫描和一般的connect扫描)2.可以扫描单个IP或IP段所有端口3.可以扫描单个IP或IP段单个端口4.可以扫描单个IP或IP段用户定义的端口5.可以显示打开端口的banner6.可将结果写入文件7.TCP扫描可自定义线程数 用法:scanner TCP&#x2F;SYN St">
+<meta property="og:type" content="article">
+<meta property="og:title" content="s扫描器下载和说明">
+<meta property="og:url" content="https://blog.foolbird.net/463.html">
+<meta property="og:site_name" content="Maker&#39;s Blog">
+<meta property="og:description" content="S扫描器是一个简单的使用两种常用的扫描方式进行端口扫描的端口扫描器程序.可实现的功能是:1.两种不同的扫描方式(SYN扫描和一般的connect扫描)2.可以扫描单个IP或IP段所有端口3.可以扫描单个IP或IP段单个端口4.可以扫描单个IP或IP段用户定义的端口5.可以显示打开端口的banner6.可将结果写入文件7.TCP扫描可自定义线程数 用法:scanner TCP&#x2F;SYN St">
+<meta property="og:locale">
+<meta property="article:published_time" content="2007-02-04T05:40:05.000Z">
+<meta property="article:modified_time" content="2023-12-30T06:45:52.790Z">
+<meta property="article:author" content="王默">
+<meta property="article:tag" content="s扫描器">
+<meta property="article:tag" content="安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@m4ker">
+  
+    <link rel="alternative" href="/atom.xml" title="Maker&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <!--
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Maker&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我相信, 太阳地下有很多值得去的地方, 最近的就在我们心中.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/history">History</a>
+        
+        
+          <a class="main-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-463" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      s扫描器下载和说明
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/463.html" class="article-date">
+  <time datetime="2007-02-04T05:40:05.000Z" itemprop="datePublished">2007-02-04</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>S扫描器是一个简单的使用两种常用的扫描方式进行端口扫描的端口扫描器程序.<br>可实现的功能是:<br>1.两种不同的扫描方式(SYN扫描和一般的connect扫描)<br>2.可以扫描单个IP或IP段所有端口<br>3.可以扫描单个IP或IP段单个端口<br>4.可以扫描单个IP或IP段用户定义的端口<br>5.可以显示打开端口的banner<br>6.可将结果写入文件<br>7.TCP扫描可自定义线程数</p></p>
+<p>用法:scanner TCP&#x2F;SYN StartIP [EndIP] Ports [Threads] [&#x2F;Banner] [&#x2F;Save]</p>
+<p>参数说明:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TCP&#x2F;SYN&nbsp;&nbsp;&nbsp;&nbsp; -&gt; TCP方式扫描或SYN方式扫描(SYN扫描需要在win 2k或以上系统才行),SYN扫描对本机无效<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StartIP&nbsp;&nbsp;&nbsp;&nbsp; -&gt; 起始扫描的IP<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; EndIP&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; 结束扫描的IP,可选项,如果这一项没有，就只是对单个IP扫描<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Ports&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; 可以是单个端口，连续的一段端口或非连续的端口<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Threads&nbsp;&nbsp;&nbsp;&nbsp; -&gt; 使用最大线程数去扫描(SYN扫描不需要加这一项),不能超过1024线程<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x2F;Banner&nbsp;&nbsp;&nbsp;&nbsp; -&gt; 扫描端口时一并将Banner显示出来,这一选项只对TCP扫描有效<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#x2F;Save&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -&gt; 将结果写入当前目录的Result.txt文件中去</p>
+<p>&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp; 我们先点击开始菜单—&gt;运行—&gt;CMD.EXE，因为我把扫描器放在F盘，你们的扫描器放哪你们就进哪里，<br>打开S扫描器，下面我举几个例子演示下S扫描器的主要几个作用。<br>&nbsp;<br>例子一:<br>S TCP 218.80.12.1 218.80.12.123 80 512<br>TCP扫描218.80.12.1到218.80.12.123这IP段中的80端口,最大并发线程是512</p>
+<p>例子二：<br>S TCP 218.80.12.1 218.80.12.123 21,5631 512 &#x2F;Banner<br>TCP扫描218.80.12.1到218.80.12.123这IP段中的21和5631端口,最大并发线程是512,并显示Banner</p>
+<p>例子三：<br>S TCP 218.80.12.1 218.80.12.12 1-200 512<br>TCP扫描218.80.12.1到218.80.12.12这IP段中的1到200端口,最大并发线程是512</p>
+<p>例子四：<br>S TCP 218.80.12.7 1-200 512<br>TCP扫描218.80.12.7这IP中的1到200端口,最大并发线程是512</p>
+<p>例子五：<br>S SYN 218.80.12.7 1-65535 &#x2F;Save<br>SYN扫描218.80.12.7这IP中的1到65535端口,将结果写入Result.txt<br>扫描结束后Result.txt就存放在你的S扫描器所在的硬盘里，就是这个文档。刚才扫描的东西都在里面。</p>
+<p>例子六：<br>S SYN 218.80.12.1 218.80.12.255 21 &#x2F;Save<br>TCP扫描218.80.12.1到218.80.12.255这IP段中的21端口,将结果写入Result.txt<br>这个我重点说明一下，因为这条命令就是专门用来找肉鸡的，扫描一个IP段有没有开3389的或1433的<br>我示范下：S SYN 218.80.1.1 218.80.255.255 3389 &#x2F;Save （找开放3389肉鸡的指令，矮鸟要牢记哦）<br>我晕哦，好多开了3389的，大家只要利用这指令扫到开3389的IP，再用别工具继续扫开了3389的肉鸡的弱口令<br>找到了马上建立管理员，登陆进去，你就算得到一个肉鸡了，由于本动画不是教找肉鸡的，我也不进行操作了</p>
+<p>注意:<br>1.SYN扫描是很依赖于扫描者和被扫描者的网速的,如果你是内网的系统，那你不一定可以使用SYN扫描的<br>，因为你的网关的类型会决定内网系统是否能进行SYN扫描.如果你的配置较低的话，我也不推荐使用<br>SYN扫描.SYN扫描速度是比TCP扫描的速度快很多的，但在稳定性方面却不是太好，所以自己决定使用<br>哪种模式进行扫描。<br>2.SYN扫描不需要线程那个参数，请看上面例子5和6<br>3.TCP扫描的最大并发线程不能超过1024.<br>4.使用SYN模式扫描，不能扫描Banner,具体为什么不能，请查看有关SYN的资料。</p>
+<p><strong>附件:</strong><a href="//blog.foolbird.net/wp-content/uploads/2007/02/156_s.exe">s.exe</a>(8192 Byte)</p>
+<p>**附件:**[s.rar](http://www.foolbird.net/wp-content/uploads/2007/02/157_s.rar)(689328 Byte)</p
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/463.html" data-id="clqs2w2sc007yqci502ut06dw" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/463.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/s%E6%89%AB%E6%8F%8F%E5%99%A8/" rel="tag">s扫描器</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E5%85%A8/" rel="tag">安全</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/461.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          tel.xls.exe专杀下载
+        
+      </div>
+    </a>
+  
+  
+    <a href="/475.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">[sablog-x 1.2 模板]White for Sablog-X 1.2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  <div id="search-form-wrap">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.foolbird.net"></form>
+  </div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2006 - 2023 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/history" class="mobile-nav-link">History</a>
+  
+  
+    <a class="mobile-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'makerwang';
+  
+  var disqus_url = 'https://blog.foolbird.net/463.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>
