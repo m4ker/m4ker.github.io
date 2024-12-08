@@ -1,0 +1,35 @@
+# Header
+menu:
+  Home: /
+  Archives: /archives
+  History: /history
+rss: /atom.xml
+
+# Content
+excerpt_link: Read More
+fancybox: true
+
+# Sidebar
+sidebar: right
+widgets:
+- category
+- archive
+#- link
+#- tagcloud
+#- recent_posts
+
+# Miscellaneous
+google_analytics:
+favicon: /favicon.png
+twitter: m4ker
+google_plus:
+fb_admins:
+fb_app_id:
+
+link:
+  - title: 情侣头像
+    url: http://qltx.cn
+  - title: 大芳
+    url: http://pmdafang.com
+  - title: 什么值得提醒
+    url: http://smzdtx.com

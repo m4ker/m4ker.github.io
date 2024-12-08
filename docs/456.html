@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>删除硬盘中的Thumbs.db | Maker&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="今天有发现硬盘里有Thumbs.db文件了,删掉之后过了不久又出现了,以前也发现过,以为是病毒呢,但现在装了正版金山,怎么还会出现呢? 到网上一番搜索之后发现Thumbs.db并不是病毒. Thumbs.db只是一个图片索引文件，可以加速你用缩略图方式查看图片,会随着文件夹的图片的增多也体积增大.本来只要你硬盘够大,这个文件也没什么影响,但很多朋友在上传东西到服务器时,往往会不小心把这个文件也传了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="删除硬盘中的Thumbs.db">
+<meta property="og:url" content="https://blog.foolbird.net/456.html">
+<meta property="og:site_name" content="Maker&#39;s Blog">
+<meta property="og:description" content="今天有发现硬盘里有Thumbs.db文件了,删掉之后过了不久又出现了,以前也发现过,以为是病毒呢,但现在装了正版金山,怎么还会出现呢? 到网上一番搜索之后发现Thumbs.db并不是病毒. Thumbs.db只是一个图片索引文件，可以加速你用缩略图方式查看图片,会随着文件夹的图片的增多也体积增大.本来只要你硬盘够大,这个文件也没什么影响,但很多朋友在上传东西到服务器时,往往会不小心把这个文件也传了">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog.foolbird.net/wp-content/uploads/2007/02/186_1.jpg">
+<meta property="og:image" content="https://blog.foolbird.net/wp-content/uploads/2007/02/187_2.jpg">
+<meta property="article:published_time" content="2007-02-08T08:04:30.000Z">
+<meta property="article:modified_time" content="2024-12-07T15:25:12.176Z">
+<meta property="article:author" content="王默">
+<meta property="article:tag" content="Thumbs.db">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.foolbird.net/wp-content/uploads/2007/02/186_1.jpg">
+<meta name="twitter:creator" content="@m4ker">
+  
+    <link rel="alternative" href="/atom.xml" title="Maker&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <!--
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Maker&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我相信, 太阳地下有很多值得去的地方, 最近的就在我们心中.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/history">History</a>
+        
+        
+          <a class="main-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-456" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      删除硬盘中的Thumbs.db
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/456.html" class="article-date">
+  <time datetime="2007-02-08T08:04:30.000Z" itemprop="datePublished">2007-02-08</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天有发现硬盘里有Thumbs.db文件了,删掉之后过了不久又出现了,以前也发现过,以为是病毒呢,但现在装了正版金山,怎么还会出现呢?</p>
+<p>到网上一番搜索之后发现Thumbs.db并不是病毒.</p>
+<p>Thumbs.db只是一个图片索引文件，可以加速你用缩略图方式查看图片,会随着文件夹的图片的增多也体积增大.本来只要你硬盘够大,这个文件也没什么影响,但很多朋友在上传东西到服务器时,往往会不小心把这个文件也传了上去,有点不好.</p>
+<p>从Windows 98开始,系统增加了图片预览功能,保存了图片的文件夹下会产生一个名为”Thumbs.db”的文件,这个文件会随着图片文件的增加而膨胀.奇怪的是,这个文件被删除后下次预览图片时它又会自动生成.</p>
+<p>下面教大家如何让系统不生成Thumbs.db.</p>
+<p>在”控制面板”中打开”文件夹选项”,在”文件夹选项”对话框中切换到”查看”标签,在”不缓存缩略图”复选框前打上”√”,再点击”确定”按钮退出即可.</p>
+<p><a href="http://www.foolbird.net/?attachment_id=168" title="1.jpg"><img src="//blog.foolbird.net/wp-content/uploads/2007/02/186_1.jpg" alt="1.jpg"></a></p>
+<p>好,现在我们可以确保不会在生成Thumbs.db了,但是已经生成的Thumbs.db是不会自动消失的,需要手动将硬盘中的Thumbs.db全部删掉.</p>
+<p>打开资源管理器或者我的电脑,点击工具栏上的”搜索”按钮或按快捷键Ctrl+F,在我的电脑范围内搜索Thumbs.db,按立即搜索,</p>
+<p><a href="http://www.foolbird.net/?attachment_id=169" title="2.jpg"><img src="//blog.foolbird.net/wp-content/uploads/2007/02/187_2.jpg" alt="2.jpg"></a></p>
+<p>等到出现搜索结果之后Ctrl+A选中全部文件,删除就OK了.</p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/456.html" data-id="cm4fsa2dn007cplv49fw22rlv" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/456.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Thumbs-db/" rel="tag">Thumbs.db</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/454.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          窗口化运行你的魔兽争霸3冰封王座.
+        
+      </div>
+    </a>
+  
+  
+    <a href="/459.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">如何在魔兽争霸III冰封王座中使用中文名字.</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  <div id="search-form-wrap">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.foolbird.net"></form>
+  </div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2006 - 2024 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/history" class="mobile-nav-link">History</a>
+  
+  
+    <a class="mobile-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'makerwang';
+  
+  var disqus_url = 'https://blog.foolbird.net/456.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

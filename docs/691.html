@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>vForm ver1.3 build 20071207 | Maker&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="为了简化烦琐的javascript前端验证代码, 为了更好的通过w3c标准认证, Oh yeah, vForm诞生了! 下载程序请直接拉到文章最后的附件部分. 什么是vForm? vForm是一个php和一个javascript的结合, 再具体点说,vform由一个php类和一个javascript验证函数库组成, php的作用就是控制调用和生成javascript. 为什么开发vForm? ja">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vForm ver1.3 build 20071207">
+<meta property="og:url" content="https://blog.foolbird.net/691.html">
+<meta property="og:site_name" content="Maker&#39;s Blog">
+<meta property="og:description" content="为了简化烦琐的javascript前端验证代码, 为了更好的通过w3c标准认证, Oh yeah, vForm诞生了! 下载程序请直接拉到文章最后的附件部分. 什么是vForm? vForm是一个php和一个javascript的结合, 再具体点说,vform由一个php类和一个javascript验证函数库组成, php的作用就是控制调用和生成javascript. 为什么开发vForm? ja">
+<meta property="og:locale">
+<meta property="article:published_time" content="2007-12-06T22:21:24.000Z">
+<meta property="article:modified_time" content="2024-12-07T15:25:12.182Z">
+<meta property="article:author" content="王默">
+<meta property="article:tag" content="php">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="验证">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@m4ker">
+  
+    <link rel="alternative" href="/atom.xml" title="Maker&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <!--
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  -->
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Maker&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">我相信, 太阳地下有很多值得去的地方, 最近的就在我们心中.</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/history">History</a>
+        
+        
+          <a class="main-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+        
+      </nav>
+      <nav id="sub-nav">
+      </nav>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-691" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      vForm ver1.3 build 20071207
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/691.html" class="article-date">
+  <time datetime="2007-12-06T22:21:24.000Z" itemprop="datePublished">2007-12-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>为了简化烦琐的javascript前端验证代码,</p>
+<p>为了更好的通过w3c标准认证,</p>
+<p>Oh yeah, vForm诞生了!</p>
+<p>下载程序请直接拉到文章最后的附件部分.</p>
+<p>什么是vForm?</p>
+<p>vForm是一个php和一个javascript的结合, 再具体点说,vform由一个php类和一个javascript验证函数库组成, php的作用就是控制调用和生成javascript.</p>
+<p>为什么开发vForm?</p>
+<p>javascript验证是我们公司每个项目必须要做的工作, 为了避免反复写大量的javascript验证代码, 所以抽出了一些时间开发vForm.</p>
+<p>vForm有多方便?</p>
+<p>因为本人很懒, 所以需要程序一定要完成大部分工作.不说废话,上代码,看看vform如何完成一个表单验证. 注:需要将vform.php和vform.js放到同目录下.可以直接下载程序包,里面也有这个例子.</p>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="language-php"><span class="comment">/**</span></span></span><br><span class="line"><span class="comment"><span class="language-php"> *   这是一个vfrom使用的一个离子.本例中为大家演示了各种验证规则</span></span></span><br><span class="line"><span class="comment"><span class="language-php"> * 的使用和同页面多表单验证的实现方法.</span></span></span><br><span class="line"><span class="comment"><span class="language-php"> */</span></span></span><br><span class="line"><span class="language-php"><span class="keyword">require_once</span>(’vform.php’);</span></span><br><span class="line"><span class="language-php"><span class="variable">$config</span>  = <span class="keyword">array</span>(</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’username’,’<span class="keyword">require</span>’,’请输入帐号’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’username’,’<span class="number">10</span>′,’帐号不能超过<span class="number">10</span>位’,’<span class="number">5</span>′,’帐号不能少于<span class="number">5</span>位’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’pass’,’<span class="keyword">require</span>’,’请输入密码’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’pass’,’<span class="number">16</span>′,’密码不能超过<span class="number">16</span>位’,’<span class="number">6</span>′,’密码不能少于<span class="number">6</span>位’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’s’,’repass’,’pass’,’两次输入的密码必须相同’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’qq’,’number’,’QQ号码必须为数字’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’qq’,’<span class="number">9</span>′,’QQ号码不能超过<span class="number">9</span>位’,’<span class="number">5</span>′,’QQ号码不能少于<span class="number">5</span>位’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’phone’,’phone’,’电话号码由-和数字组成’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’name’,’chinese’,’姓名必须是汉字’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’name’,’<span class="number">4</span>′,’这里不欢迎日本人’,’<span class="number">2</span>′,’名字太短了’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’ename’,’english’,’英文名必须是英文’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’name’,’<span class="number">25</span>′,’你是火星人么?’,’<span class="number">2</span>′,’名字太短了’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’age’,’number’,’年龄要是数字才行’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’postcode’,’postcode’,’这个是邮政编码’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’p’,’percent’,’一个百分比’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’f’,’<span class="keyword">float</span>’,’一个有理数,正负小数整数等等’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’nc’,’nochinese’,’不能输入汉字’),</span></span><br><span class="line"><span class="language-php">);</span></span><br><span class="line"><span class="language-php"><span class="variable">$config2</span>  = <span class="keyword">array</span>(</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’username2′,’<span class="keyword">require</span>’,’请输入帐号<span class="number">2</span>′),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’pass2′,’<span class="keyword">require</span>’,’请输入密码<span class="number">2</span>′),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’s’,’repass2′,’pass2′,’两次输入的密码<span class="number">2</span>必须相同’)</span></span><br><span class="line"><span class="language-php">);</span></span><br><span class="line"><span class="language-php"><span class="variable">$vform</span>   = <span class="keyword">new</span> <span class="title function_ invoke__">vform</span>(<span class="variable">$config</span>, ‘form1′);</span></span><br><span class="line"><span class="language-php"><span class="variable">$xform</span>   = <span class="keyword">new</span> <span class="title function_ invoke__">vform</span>(<span class="variable">$config2</span>, ‘b_2′, ‘click’);</span></span><br><span class="line"><span class="language-php"><span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span> <span class="keyword">PUBLIC</span> “-//W3C//DTD <span class="keyword">XHTML</span> 1.0 <span class="keyword">Transitional</span>//EN” “http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd“&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">”http://www.w3.org/1999/xhtml”</span> <span class="attr">xml:lang</span>=<span class="string">”en”</span> <span class="attr">lang</span>=<span class="string">”en”</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">”Content-Type”</span> <span class="attr">content</span>=<span class="string">”text/html;</span> <span class="attr">charset</span>=<span class="string">utf-8″</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>vForm示例<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">”text/css”</span>&gt;</span><span class="language-css"></span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">*&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin</span>:<span class="number">0</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="selector-tag">body</span>,<span class="selector-tag">html</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font</span>:<span class="number">12px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span>:center;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-tag">h1</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font</span>:<span class="number">36px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font-weight</span>:bold;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span><span class="selector-pseudo">:left</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">background</span>:<span class="number">#ccc</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border-bottom</span>:<span class="number">2px</span> solid <span class="number">#666</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin-bottom</span>:<span class="number">10px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-tag">form</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin</span>:<span class="number">10px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-tag">img</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border</span>:<span class="number">0</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-id">#main</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">width</span>:<span class="number">275px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin</span>:<span class="number">0</span> auto;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span><span class="selector-pseudo">:left</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-id">#main</span> <span class="selector-tag">p</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span><span class="selector-pseudo">:right</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">padding</span>:<span class="number">2px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-class">.text</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">width</span>:<span class="number">150px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">background</span>:<span class="number">#eee</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#666</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-class">.botton</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">width</span>:<span class="number">75px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">color</span>:<span class="number">#fff</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font-weight</span>:bold;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">background</span>:<span class="number">#555</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#000</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">padding</span>:<span class="number">2px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?=</span><span class="variable">$vform</span>-&gt;<span class="title function_ invoke__">p</span>();<span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?=</span><span class="variable">$xform</span>-&gt;<span class="title function_ invoke__">p</span>(<span class="literal">true</span>);<span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>vForm示例<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">’main’</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">’http://www.m4ker.net’</span> <span class="attr">method</span>=<span class="string">’get’</span> <span class="attr">id</span>=<span class="string">’form1′</span> &gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>帐号:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’username’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’username’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>密码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’pass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’pass’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>重复密码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’repass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’repass’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>电话号码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’phone’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’phone’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>QQ号码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’qq’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’qq’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>姓名:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’name’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’name’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>英文名:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’ename’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’ename’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>年龄:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’age’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’age’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>邮政编码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’postcode’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’postcode’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>百分比:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’p’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’p’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>有理数:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’f’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’f’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>非汉字:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’nc’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’nc’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">’submit’</span> <span class="attr">value</span>=<span class="string">’验证’</span> <span class="attr">class</span>=<span class="string">’botton’</span> <span class="attr">id</span>=<span class="string">’b_1′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">’http://www.m4ker.net’</span> <span class="attr">method</span>=<span class="string">’get’</span> <span class="attr">id</span>=<span class="string">’form2′</span> &gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>帐号2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’username’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’username2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>密码2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’pass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’pass2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>重复密码2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’repass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’repass2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">’submit’</span> <span class="attr">value</span>=<span class="string">’验证’</span> <span class="attr">class</span>=<span class="string">’botton’</span> <span class="attr">id</span>=<span class="string">’b_2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">”http://validator.w3.org/check?uri</span>=<span class="string">referer”</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">”http://www.w3.org/Icons/valid-xhtml10”</span> <span class="attr">alt</span>=<span class="string">”Valid</span> <span class="attr">XHTML</span> <span class="attr">1.0</span> <span class="attr">Transitional</span>” <span class="attr">height</span>=<span class="string">”31″</span> <span class="attr">width</span>=<span class="string">”88″</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>Ok了, 一点javascript都不需要.更详细的使用方法就需要大家自己发掘了.</p>
+<p>附件:<a href="http://www.foolbird.net/wp-content/uploads/2007/12/vform_ver1_3_build_20071207.zip">vform ver1.3 bulid 20071207</a></p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/691.html" data-id="cm4fsa2e5009nplv4ggz4b3xw" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/691.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AA%8C%E8%AF%81/" rel="tag">验证</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/693.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          windows下安装symfony
+        
+      </div>
+    </a>
+  
+  
+    <a href="/700.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SaBlog-X1.6 -&gt; WordPress 2.2.3 数据完美转移.</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  <div id="search-form-wrap">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.foolbird.net"></form>
+  </div>
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2006 - 2024 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/history" class="mobile-nav-link">History</a>
+  
+  
+    <a class="mobile-nav-link" href="/atom.xml" title="RSS Feed">RSS</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'makerwang';
+  
+  var disqus_url = 'https://blog.foolbird.net/691.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+
+<script src="/js/jquery.min.js"></script>
+
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+  </div>
+</body>
+</html>

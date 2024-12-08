@@ -1,0 +1,14 @@
+
+  <div class="widget-wrap">
+    <h3 class="widget-title">Links</h3>
+    <div class="widget">
+      <ul>
+        <% for (var i in theme.link) { %>
+          <li>
+            <a href="<%- url_for(theme.link[i].url) %>"><%= theme.link[i].title || theme.link[i].url %></a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+

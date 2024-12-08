@@ -1,0 +1,8 @@
+<aside id="sidebar"<% if (theme.sidebar === 'bottom'){ %> class="outer"<% } %>>
+  <div id="search-form-wrap">
+    <%- search_form({button: '&#xF002;'}) %>
+  </div>
+  <% theme.widgets.forEach(function(widget){ %>
+    <%- partial('_widget/' + widget) %>
+  <% }) %>
+</aside>

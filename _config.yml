@@ -1,0 +1,130 @@
+# Hexo C onfiguration
+##  Docs: http://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: "Maker's Blog" 
+#subtitle: "用多一点点的辛苦, 去交换多一点点的幸福."
+#2016-12-31 更换了subtitle
+subtitle: "我相信, 太阳地下有很多值得去的地方, 最近的就在我们心中."
+description:
+author: 王默
+language:
+timezone:
+
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: https://blog.foolbird.net
+root: /
+#permalink: :year/:month/:day/:title/
+permalink: :id.html
+permalink_defaults:
+
+# Directory
+source_dir: source
+public_dir: docs
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link: true # Open external links in new tab
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: true
+  tab_replace:
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 5
+pagination_dir: page
+
+#archive: 0
+#category: 0
+#tag: 0
+
+index_generator:
+  per_page: 5 ##首页默认9篇文章标题 如果值为0不分页
+archive_generator:
+  per_page: 100 ##归档页面默认100篇文章标题
+  yearly: true  ##生成年视图
+  monthly: true ##生成月视图
+tag_generator:
+  per_page: 100 ##标签分类页面默认100篇文章
+category_generator:
+  per_page: 100 ###分类页面默认100篇文章
+
+# Extensions
+## Plugins: http://hexo.io/plugins/
+plugins:
+- hexo-generator-feed
+- hexo-generator-sitemap
+
+## Themes: http://hexo.io/themes/
+theme: landscape
+#theme: simplest
+#theme: maupassant
+
+# Deployment
+## Docs: http://hexo.io/docs/deployment.html
+deploy:
+  type:
+
+# Comment
+disqus_shortname: makerwang
+
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+
+#category: 200
+
+# Hexo Beautify
+beautify:
+  types:
+    - html
+    - css
+    - js
+  exclude:
+    - '*.min.css'
+    - '*.min.js'
+  html:
+    'indent_inner_html': false
+    'indent_size': 2
+    'indent_with_tabs': false
+    # More Options (https://github.com/beautify-web/js-beautify/blob/master/README.md)
+  css:
+    'indent_size': 2
+    'newline_between_rules': true
+    'indent_with_tabs': false
+    # More Options (https://github.com/beautify-web/js-beautify/blob/master/README.md)
+  js:
+    'indent_size': 2
+    'indent_with_tabs': false
+    # More Options (https://github.com/beautify-web/js-beautify/blob/master/README.md)

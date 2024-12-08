@@ -1,0 +1,90 @@
+if sidebar is bottom
+  @import "sidebar-bottom"
+else
+  @import "sidebar-aside"
+
+.widget
+  @extend $base-style
+  line-height: line-height
+  word-wrap: break-word
+  font-size: 0.9em
+  ul, ol
+    list-style: none
+    margin: 0
+    ul, ol
+      margin: 0 20px
+    ul
+      list-style: disc
+    ol
+      list-style: decimal
+
+.category-list-count
+.tag-list-count
+.archive-list-count
+  padding-left: 5px
+  color: color-grey
+  font-size: 0.85em
+  &:before
+    content: "("
+  &:after
+    content: ")"
+
+.tagcloud
+  a
+    margin-right: 5px
+    display: inline-block
+/*
+#nav-rss-link,nav-search-btn
+  padding-left:0
+*/
+#search-form-wrap
+  //position: absolute
+  //top: 15px
+  width: 150px
+  height: 30px
+  margin-top:50px;
+  //right: -150px
+  //opacity: 0
+  //transition: 0.2s ease-out
+  &.on
+    opacity: 1
+    right: 0
+  @media mq-mobile
+    width: 100%
+    //right: -100%
+
+.search-form
+  //position: absolute
+  //top: 0
+  //left: 0
+  //right: 0
+  background: #fff
+  //padding: 5px 15px
+  //border-radius: 15px
+  //box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
+
+.search-form-input
+  padding: 5px 15px
+  border: 1px solid #ccc
+  background: none
+  color: color-default
+  width: 100%
+  font: 13px font-sans
+  outline: none
+  &::-webkit-search-results-decoration
+  &::-webkit-search-cancel-button
+    -webkit-appearance: none
+
+.search-form-submit
+  display:none
+  position: absolute
+  top: 50%
+  right: 10px
+  margin-top: -7px
+  font: 13px font-icon
+  border: none
+  background: none
+  color: #bbb
+  cursor: pointer
+  &:hover, &:focus
+    color: #777
