@@ -8,12 +8,12 @@
   <meta name="description" content="大概八年前，写过这样一篇文章：不使用中间变量来交换变量的值，后来面试的时候常常遇到这题，最近翻出来看，发现当时对这个问题的理解不够深刻，所以今天又整理了一下。 1. 一些有限制的方法字符串版本123456&lt;?php$a &#x3D; &quot;a&quot;;$b &#x3D; &quot;b&quot;;$a .&#x3D; $b; &#x2F;&#x2F; a&#x3D;ab, b&#x3D;b$b &#x3D; str_replace($b, &quot;&amp;qu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="经典问题再解读：不用中间变量交换两个变量的值">
-<meta property="og:url" content="https://blog.foolbird.net/5002.html">
+<meta property="og:url" content="https://m4ker.github.io/5002.html">
 <meta property="og:site_name" content="Maker&#39;s Blog">
 <meta property="og:description" content="大概八年前，写过这样一篇文章：不使用中间变量来交换变量的值，后来面试的时候常常遇到这题，最近翻出来看，发现当时对这个问题的理解不够深刻，所以今天又整理了一下。 1. 一些有限制的方法字符串版本123456&lt;?php$a &#x3D; &quot;a&quot;;$b &#x3D; &quot;b&quot;;$a .&#x3D; $b; &#x2F;&#x2F; a&#x3D;ab, b&#x3D;b$b &#x3D; str_replace($b, &quot;&amp;qu">
 <meta property="og:locale">
 <meta property="article:published_time" content="2015-12-06T09:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-07T15:25:12.179Z">
+<meta property="article:modified_time" content="2024-12-10T15:03:33.286Z">
 <meta property="article:author" content="王默">
 <meta property="article:tag" content="算法">
 <meta name="twitter:card" content="summary">
@@ -96,7 +96,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大概八年前，写过这样一篇文章：<a href="//blog.foolbird.net/331.html">不使用中间变量来交换变量的值</a>，后来面试的时候常常遇到这题，最近翻出来看，发现当时对这个问题的理解不够深刻，所以今天又整理了一下。</p>
+        <p>大概八年前，写过这样一篇文章：<a href="/331.html">不使用中间变量来交换变量的值</a>，后来面试的时候常常遇到这题，最近翻出来看，发现当时对这个问题的理解不够深刻，所以今天又整理了一下。</p>
 <h2 id="1-一些有限制的方法"><a href="#1-一些有限制的方法" class="headerlink" title="1. 一些有限制的方法"></a>1. 一些有限制的方法</h2><h3 id="字符串版本"><a href="#字符串版本" class="headerlink" title="字符串版本"></a>字符串版本</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&quot;a&quot;</span>;</span><br><span class="line"><span class="variable">$b</span> = <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="variable">$a</span> .= <span class="variable">$b</span>; <span class="comment">// a=ab, b=b</span></span><br><span class="line"><span class="variable">$b</span> = <span class="title function_ invoke__">str_replace</span>(<span class="variable">$b</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$a</span>); <span class="comment">// a=ab, b=a</span></span><br><span class="line"><span class="variable">$a</span> = <span class="title function_ invoke__">str_replace</span>(<span class="variable">$b</span>, <span class="string">&quot;&quot;</span>, <span class="variable">$a</span>); <span class="comment">// a=b, b=a</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$a</span> = <span class="string">&quot;a&quot;</span>;</span><br><span class="line"><span class="variable">$b</span> = <span class="string">&quot;b&quot;</span>;</span><br><span class="line"><span class="variable">$a</span> .= <span class="variable">$b</span>; <span class="comment">// a=ab, b=b</span></span><br><span class="line"><span class="variable">$b</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$a</span>, <span class="number">0</span>, (<span class="title function_ invoke__">strlen</span>(<span class="variable">$a</span>) - <span class="title function_ invoke__">strlen</span>(<span class="variable">$b</span>))); <span class="comment">// a=ab, b=a</span></span><br><span class="line"><span class="variable">$a</span> = <span class="title function_ invoke__">substr</span>(<span class="variable">$a</span>, <span class="title function_ invoke__">strlen</span>(<span class="variable">$b</span>)); <span class="comment">// a=b, b=a</span></span><br></pre></td></tr></table></figure>
@@ -167,9 +167,9 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/5002.html" data-id="cm4fsa2dw008lplv4dch91gak" class="article-share-link">Share</a>
+      <a data-url="https://m4ker.github.io/5002.html" data-id="cm4fsa2dw008lplv4dch91gak" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/5002.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://m4ker.github.io/5002.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li></ul>
@@ -210,7 +210,7 @@
         
           <aside id="sidebar">
   <div id="search-form-wrap">
-    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.foolbird.net"></form>
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://m4ker.github.io"></form>
   </div>
   
     
@@ -259,7 +259,7 @@
 <script>
   var disqus_shortname = 'makerwang';
   
-  var disqus_url = 'https://blog.foolbird.net/5002.html';
+  var disqus_url = 'https://m4ker.github.io/5002.html';
   
   (function(){
     var dsq = document.createElement('script');
