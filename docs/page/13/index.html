@@ -66,6 +66,164 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-1819" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/1819.html">深入理解Magento – 第三章 – 布局，块和模板</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/1819.html" class="article-date">
+  <time datetime="2011-10-22T06:17:02.000Z" itemprop="datePublished">2011-10-22</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="深入理解Magento"><a href="#深入理解Magento" class="headerlink" title="深入理解Magento"></a>深入理解Magento</h1><p>作者：<a href="http://alanstorm.com/">Alan Storm</a><br>翻译：<a href="http://www.zhlmmc.com/">Hailong Zhang</a></p>
+<h3 id="第三章-–-布局，块和模板"><a href="#第三章-–-布局，块和模板" class="headerlink" title="第三章 – 布局，块和模板"></a>第三章 – 布局，块和模板</h3><p>我们接着研究Magento。根据我们第二章讲的Magento  MVC的架构，我们接下来应该讲模型（Model），但是我们跳过模型先来看布局和块。和一些流行的PHP  MVC架构不同的是，Magento的执行控制器不直接将数据传给试图，相反的视图将直接引用模型，从模型取数据。这样的设计就导致了视图被拆分成两部 分，块（Block）和模板（Template）。块是PHP对象，而模板是原始PHP文件，混合了XHTML和PHP代码（也就是把PHP作为模板语言 来使用了）。每一个块都和一个唯一的模板文件绑定。在模板文件phtml中，“$this”就是指该模板文件对应的快对象。</p>
+<p>让我们来看一个例子<br><code>File: app/design/frontend/base/default/template/catalog/product/list.phtml</code><br>你将看到如下代码<br>&#96;<?php $_productCollection=$this->getLoadedProductCollection() ?><br><?php if(!$_productCollection->count()): ?></p>
+<?php echo $this->__(&#039;There are no products matching the selection.&#039;) ?>
+
+<?php else: ?><p><code>这里“getLoadedProductCollection”方法可以在这个模板的块对象“Mage_Catalog_Block_Product_List”中找到</code>File: app&#x2F;code&#x2F;core&#x2F;Mage&#x2F;Catalog&#x2F;Block&#x2F;Product&#x2F;List.php<br>…<br>public function getLoadedProductCollection()<br>{<br>return $this-&gt;_getProductCollection();<br>}<br>…&#96;<br>块的“_getProductCollection”方法会实例化模型，并读取数据然后返回给模板。</p>
+<h4 id="嵌套块"><a href="#嵌套块" class="headerlink" title="嵌套块"></a>嵌套块</h4><p>Magento把视图分离成块和模板的真正强大之处在于“getChildHtml”方法。这个方法可以让你实现在块中嵌套块的功能。顶层的块调用第二层的块，然后是第三层……这就是Magento如何输出HTML的。让我们来看一下单列的顶层模板<br><code>File: app/design/frontend/base/default/template/page/1column.phtml</code></p>
+<p>&#96;<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"></p>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo  $this->getLang() ?>" lang="<?php echo $this->getLang()  ?>">
+<head>
+<?php echo $this->getChildHtml(&#039;head&#039;) ?>
+</head>
+<body<?php echo $this->getBodyClass()?&#039;&#039;:&#039;&#039; ?>>
+<?php echo $this->getChildHtml(&#039;after_body_start&#039;) ?>
+<div>
+<?php echo $this->getChildHtml(&#039;global_notices&#039;) ?>
+<div>
+<?php echo $this->getChildHtml(&#039;header&#039;) ?>
+<div>
+<div>
+<?php echo $this->getChildHtml(&#039;breadcrumbs&#039;) ?>
+<div>
+<?php echo $this->getChildHtml(&#039;global_messages&#039;) ?>
+<?php echo $this->getChildHtml(&#039;content&#039;) ?>
+</div>
+</div>
+</div>
+<?php echo $this->getChildHtml(&#039;footer&#039;) ?>
+<?php echo $this->getChildHtml(&#039;before_body_end&#039;) ?>
+</div>
+</div>
+<?php echo $this->getAbsoluteFooter() ?>
+</body>
+</html>`
+我们可以看到这个模板里面很多地调用了“$this->getChildHtml(…)”。每次调用都会引入另外一个块的HTML内容，直到最底层的块。
+
+<h4 id="布局对象"><a href="#布局对象" class="headerlink" title="布局对象"></a>布局对象</h4><p>看到这里，你可能有这样的疑问<br>Magento怎么知道在一个页面上要用那些块？<br>Magento怎么知道哪一个块是顶层块？<br>“$this-&gt;getChildHtml(…)”里面的参数是什么意思？块的名字吗？<br>Magento引入了布局对象（Layout Object）来解决上面的那些问题。布局对象（或者说布局文件）就是一个XML文件，定义了一个页面包含了哪些块，并且定义了哪个块是顶层块。</p>
+<p>在第二章的时候我们在执行方法（Action Method）里面直接输出了HTML内容。现在我们要为我们的Hello World模块创建一个简单的HTML模板。首先我们要创建如下文件<br><code>app/design/frontend/default/default/layout/local.xml</code><br>包含以下内容<br><code>&lt;layout version=&quot;0.1.0&quot;&gt; &lt;default&gt; &lt;reference name=&quot;root&quot;&gt; &lt;block type=&quot;page/html&quot; name=&quot;root&quot; output=&quot;toHtml&quot;  template=&quot;../../../../../code/local/Alanstormdotcom/Helloworld/simple_page.phtml&quot;  /&gt; &lt;/reference&gt; &lt;/default&gt; &lt;/layout&gt; </code><br>再创建如下文件<br><code>app/code/local/Alanstormdotcom/Helloworld/simple_page.phtml</code><br>包含以下内容<br>&#96;<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"></p>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Untitled</title>
+<meta name="generator" content="BBEdit 9.2" />
+<style type="text/css">
+body {
+background-color:#f00;
+}
+</style>
+</head>
+<body>
+</body>
+</html>`
+最后，我们要在执行控制器里面调用布局文件，开始输出HTML。修改执行方法如下
+`public function indexAction() {
+//remove our previous echo
+//echo &#039;Hello Index!&#039;;
+$this->loadLayout();
+$this->renderLayout();
+}`
+清空Magento缓存，访问URL “http://exmaple.com/helloworld/index/index”。你应该看到一个纯红色背景的页面。这个页面的源代码应该和我们创建的文件“simple_page.phtml”一模一样。
+
+<h4 id="究竟是怎么回事呢？"><a href="#究竟是怎么回事呢？" class="headerlink" title="究竟是怎么回事呢？"></a>究竟是怎么回事呢？</h4><p>也许你看到这里一头雾水，没关系，我们来慢慢解释。首先你得安装一个 <a href="http://www.zhlmmc.com/wp-content/uploads/2010/04/MagentoLayoutViewer.tar.gz">Layout Viewer</a> 模块，这和我们第一章讲的 <a href="http://www.zhlmmc.com/wp-content/uploads/2010/04/MagentoConfigViewer.tar.gz">Config Viewer</a> 模块很相似，都是查看Magento的内部信息。安装完这个模块之后【译者注：你需要参照第一章的内容，为这个模块创建“app&#x2F;etc&#x2F;modules&#x2F;Alanstormdotcom_Layoutviewer.xml”】，打开如下URL<br><code>http://example.com/helloworld/index/index?showLayout=page</code><br>你看到的是你正在请求的页面的布局文件。它是由<block />，<reference />和<remove />组成的。当你在执行方法中调用“loadLayout”时，Magento会做如下处理<br>生成这个布局文件<br>为每一个<block />和<reference />标签实例化一个块对象。块对象的类名是通过标签的name属性来查找的。这些块对象被存储在布局对象的_blocks数组中<br>如果<block />标签包含了output属性，那么这个块的名字和output属性的值会被添加到布局对象的_output数组中<br>然后，当你在执行方法中调用“renderLayout”方法是，Magento会遍历_output数组中所有的块名字，从_blocks数组中获得该 名字的块，并调用块对象中使用output属性的值作为名字的函数。这个函数往往是“toHtml”。这个output属性也告诉Magento这里就是 输出HTML的起点，也就是顶层块。【译者注：直接阅读Layout类的代码应该比较容易理解这里的逻辑<br><code>File: app/code/core/Mage/Core/Model/Layout.php public function getOutput() &#123; $out = &amp;#039;&amp;#039;; if (!empty($this-&gt;_output)) &#123; foreach ($this-&gt;_output as $callback) &#123; $out .= $this-&gt;getBlock($callback[0])-&gt;$callback[1](); &#125; &#125; return $out; &#125;</code><br>从这里我们也可以看出，一个页面的布局文件时可以拥有多个顶层块。<br>】</p>
+<p>下面我们要讲解块对象是如何被实例化的，这个布局文件时如何被生成的，最后我们将动手做一个例子来实践这一章讲的内容。</p>
+<h4 id="实例化块对象"><a href="#实例化块对象" class="headerlink" title="实例化块对象"></a>实例化块对象</h4><p>在布局文件中，<block />和<reference />标签有一个“type”属性，这个属性其实是一个URI<br><code>&lt;block type=&quot;page/html&quot; ... &lt;block type=&quot;page/template_links&quot;</code><br>Magento就是通过这个URI是用来查找块对应的类名。这个URI分为两部分，第一部分“page”是用来在全局配置中查找一个基本类名，第二部分“html”或者“template_link”将被添加到基本类名后面生成一个具体的将被实例化的类名。</p>
+<p>我们以“page&#x2F;html”为例。首先Magento在全局配置中找到节点<br><code>/global/blocks/page</code><br>有以下内容<br><code>&lt;page&gt; &lt;class&gt; Mage_Page_Block &lt;/class&gt; &lt;/page&gt;</code><br>这里我们拿到了一个基本类名“Mage_Page_Block”，然后添加URI的第二部分“html”到基本类名后面，我们就得到最终的块对象的类名 “Mage_Page_Block_Html”。块的类名在Magento中被称为“分组类名”（Grouped Class  Names），这些类都用相似的方法被实例化。我们将在以后的章节中详细介绍这个概念。</p>
+<h4 id="和的区别"><a href="#和的区别" class="headerlink" title="和的区别"></a><block />和<reference />的区别</h4><p>我们上面提到<block />和<reference />都会实例化块对象，那么它们究竟有什么区别呢？ <reference />在布局文件中是用来表示替换一个已经存在的块，举个例子<br>&#96;<block type="page/html" name="root" output="toHtml" template="page/2columns-left.phtml"></p>
+<!-- ... sub blocks ... -->
+</block>
+<!-- ... -->
+<reference name="root">
+<block type="page/someothertype" name="root" template="path/to/some/other/template" />
+<!-- ... sub blocks ... -->
+</block>
+</reference>`
+Magento首先创建了一个名叫“root”的块。然后，它有发现了一个引用（reference）的名字也叫“root”，Magento会把原来那个“root”块替换成<reference />标签里面的那个快。
+
+<p>再来看看我们之前创建那个local.xml<br><code>&lt;layout version=&quot;0.1.0&quot;&gt; &lt;default&gt; &lt;reference name=&quot;root&quot;&gt; &lt;block type=&quot;page/html&quot; name=&quot;root&quot; output=&quot;toHtml&quot;  template=&quot;../../../../../code/local/Alanstormdotcom/Helloworld/simple_page.phtml&quot;  /&gt; &lt;/reference&gt; &lt;/default&gt; &lt;/layout&gt; </code><br>在这里，块“root”被我们用<reference />替换了，指向了一个不同的模板文件。</p>
+<h4 id="布局文件是如何生成的"><a href="#布局文件是如何生成的" class="headerlink" title="布局文件是如何生成的"></a>布局文件是如何生成的</h4><p>现在我们对布局文件已经有所了解了，但是这个布局文件是那里来的呢？要回答这个问题，我们得引入Magento中的另外两个概念，操作（Handle）和包布局（Package Layout）。</p>
+<h4 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h4><p>Magento会为每一个页面请求生成几个不同的操作。我们的Layout View模块可以显示这些处理器<br><code>http://example.com/helloworld/index/index?showLayout=handles</code><br>你应该看到类似如下列表的列表（和你的配置有关）<br><code>default STORE_bare_us THEME_frontend_default_default helloworld_index_index customer_logged_out</code><br>它们每一个都是一个操作的名字。我们可以在Magento系统的不同的地方配置操作。在这里我们需要关注两个操作 “default” 和  “helloworld_index_index”。“default”处理器是Magento的默认处理器，参与每一个请求的处理。 “helloworld_index_index”处理器的名字是frontname  “helloworld”加上执行控制器的名字“index”再加上执行方法的名字“index”。这说明执行控制器的每一个执行方法都有一个相应的操 作。</p>
+<p>我们说过“index”是Magento默认的执行控制器和执行方法的名字，所以以下请求的操作名字也是“helloworld_index_index”。<br><code>http://example.com/helloworld/?showLayout=handles</code></p>
+<h4 id="包布局"><a href="#包布局" class="headerlink" title="包布局"></a>包布局</h4><p>包布局和我们以前讲过的全局配置有些相似。它是一个巨大的XML文档包含了Magento所有的布局配置。我们可以通过以Layout View模块来查看包布局，请求一下URL<br><code>http://example.com/helloworld/index/index?showLayout=package</code><br>你可能要等一会儿才能看到输出，因为文件很大。如果你的浏览器在渲染XML的时候卡死了，建议你换成text格式的<br><code>http://example.com/helloworld/index/index?showLayout=package&amp;showLayoutFormat=text</code><br>假设你选择的是XML格式输出，那么你应该看到一个巨大的XML文件，这就是包布局。这个文件时Magento动态生成的，合并当前主题（theme）下面所有的布局文件。如果你用的是默认安装的话，这些布局文件在以下目录<br><code>app/design/frontend/base/default/layout/</code><br>其实在全局配置中，有一个<updates />节点下面定义了所有将被装载的布局文件<br><code>&lt;layout&gt; &lt;updates&gt; &lt;core&gt; &lt;file&gt;core.xml&lt;/file&gt; &lt;/core&gt; &lt;page&gt; &lt;file&gt;page.xml&lt;/file&gt; &lt;/page&gt; ... &lt;/updates&gt; &lt;/layout&gt;</code><br>当这些文件被装载以后，Magento还会装载最后一个布局文件，local.xml，也就是我们之前新建的那个文件。我们可以通过这个文件来定制Magento的布局。</p>
+<h4 id="结合操作和包布局"><a href="#结合操作和包布局" class="headerlink" title="结合操作和包布局"></a>结合操作和包布局</h4><p>在包布局文件中，我们可以看到一些熟悉的标签<block />，<reference />等等，但是他们都包含在一下这些标签中<br><code>&lt;default /&gt; &lt;catalogsearch_advanced_index /&gt; etc...</code><br>这些就是操作标签。对于每个特定的请求来说，针对这个请求的布局文件是由包布局中所有和这个请求相关的操作标签组成的。比如我们上面的例子，和请求相关的操作标签如下<br><code>&lt;default /&gt; &lt;STORE_bare_us /&gt; &lt;THEME_frontend_default_default /&gt; &lt;helloworld_index_index /&gt; &lt;customer_logged_out /&gt;</code><br>所以，针对请求<br><code>http://example.com/helloworld/index/index</code><br>布局文件就是包布局中上面这些标签的内容组合。在包布局文件中，还有一个标签<update />值得我们注意。我们可以通过这个标签引入另外一个操作标签。比如<br>&#96;<customer_account_index></p>
+<!-- ... -->
+<update handle="customer_account"/>
+<!-- ... -->
+</customer_account_index>`
+这段代码的意思是，如果一个请求包含了“customer_acount_index”操作，那么这个请求的布局文件也应该包含“customer_account”操作标签下面的<block />和<reference />。
+
+<h4 id="更新我们的例子"><a href="#更新我们的例子" class="headerlink" title="更新我们的例子"></a>更新我们的例子</h4><p>好了，理论讲完了，让我们来修改我们的例子，把这一章的内容实践一下。我们重新来看local.xml<br><code>&lt;layout version=&quot;0.1.0&quot;&gt; &lt;default&gt; &lt;reference name=&quot;root&quot;&gt; &lt;block type=&quot;page/html&quot; name=&quot;root&quot; output=&quot;toHtml&quot;  template=&quot;../../../../../code/local/Alanstormdotcom/Helloworld/simple_page.phtml&quot;  /&gt; &lt;/reference&gt; &lt;/default&gt; &lt;/layout&gt;</code><br>我们用一个引用（reference）覆盖了名为“root”的块。然后定义了一个新的块，指向了一个不同的模板文件。我们把这个引用放 在<default  />操作标签下面，那就说明这个Layout将对所有的请求有效。如果你访问Magento自带的一些页面，你会发现它们要门是空白，要么就是和我 们“hello world”例子的红色背景，但这并不是我们想要的效果。我们来修改一下local.xml，让我们的模板仅对“hello  world”的请求有效。<br><code>&lt;layout version=&quot;0.1.0&quot;&gt; &lt;helloworld_index_index&gt; &lt;reference name=&quot;root&quot;&gt; &lt;block type=&quot;page/html&quot; name=&quot;root&quot; output=&quot;toHtml&quot;  template=&quot;../../../../../code/local/Alanstormdotcom/Helloworld/simple_page.phtml&quot;  /&gt; &lt;/reference&gt; &lt;/helloworld_index_index&gt; &lt;/layout&gt;</code><br>我们把操作标签换成了“helloworld_index_index”。清空Magento缓存，重新访问Magento的各个页面，你应该发现都恢复了正常，但是针对”hello world”模块的请求页面还是我们自定义的那个。</p>
+<p>目前我们只实现了一个“index”执行函数，现在我们来实现“goodbye”执行函数。修改我们的执行控制器代码如下<br><code>public function goodbyeAction() &#123; $this-&gt;loadLayout(); $this-&gt;renderLayout(); &#125; </code><br>但是你访问一下页面的时候你还是会看到Magento的默认布局<br><code>http://example.com/helloworld/index/goodbye</code><br>那是因为我们没有为这个请求定义布局。我们需要在local.xml中添加“helloworld_index_goodbye”标签。由于 “index”请求和“goodbye”请求我们要套用的布局是一样的，所以我们将用<update>标签来重用已有的配置<br>&#96;<layout version="0.1.0"></p>
+<!-- ... -->
+<helloworld_index_goodbye>
+<update handle="helloworld_index_index" />
+</helloworld_index_goodbye>
+</layout>`
+清空Magento缓存，请求以下URL
+`http://example.com/helloworld/index/index
+http://example.com/helloworld/index/goodbye`
+你将会得到两个完全相同的页面。
+
+<h4 id="开始输出和getChildHtml方法"><a href="#开始输出和getChildHtml方法" class="headerlink" title="开始输出和getChildHtml方法"></a>开始输出和getChildHtml方法</h4><p>在Magento默认的配置下，HTML输出是从名为“root”的块开始（其实是因为这个块拥有output属性【译者注：任何一个拥有 output属性的块都是顶层块，在拥有多个顶层块的情况下Magento将按照块定义的先后顺序输出HTML】）。我们覆盖了“root”块的模板<br><code>template=&quot;../../../../../code/local/Alanstormdotcom/Helloworld/simple_page.phtml&quot;</code><br>模板文件的查找路径是当前主题（theme）的根目录，Magento默认设置时这里<br><code>app/design/frontend/base/default</code></p>
+<h4 id="为页面加入内容"><a href="#为页面加入内容" class="headerlink" title="为页面加入内容"></a>为页面加入内容</h4><p>到目前为止，我们的页面都比较无聊，啥也没有。我们来为页面加点有意义的内容。修改local.xml如下<br><code>&lt;helloworld_index_index&gt; &lt;reference name=&quot;root&quot;&gt; &lt;block type=&quot;page/html&quot; name=&quot;root&quot;  template=&quot;../../../../../code/local/Alanstormdotcom/Helloworld/simple_page.phtml&quot;&gt; &lt;block type=&quot;customer/form_register&quot; name=&quot;customer_form_register&quot; template=&quot;customer/form/register.phtml&quot;/&gt; &lt;/block&gt; &lt;/reference&gt; &lt;/helloworld_index_index&gt;</code><br>我们在“root”块里面嵌套了一个块“customer_form_register”。这个块是Magento本来就有的，包含了一张用户注册表单。 我们把这个块嵌套进来，那么我们在模板文件里面就能用这个块的内容。使用方法如下，修改simple_page.phtml<br>&#96;<body><br><?php echo $this->getChildHtml(&#039;customer_form_register&#039;); ?></p>
+</body>`
+这里“getChildHtml”的参数就是要引入的块的名字，使用起来相当方便。清空Magento缓存，刷新hello  world页面，你应该在红色背景上看到用户注册表单。Magento还有一个块，叫做“top.links”，让我们把它也加进来。修改 simple_page.html
+`<body>
+
+<h1 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h1><?php echo $this->getChildHtml(&#039;top.links&#039;); ?>
+<?php echo $this->getChildHtml(&#039;customer_form_register&#039;); ?>
+</body>`
+刷新页面，你会发现
+
+<h1 id="Links-1"><a href="#Links-1" class="headerlink" title="Links"></a>Links</h1><p>显示出来了，但是“top.links”什么都没有显示。那是因为我们并没有把 这个块引入到local.xml，所以Magento找不到这个块。“getChildHtml”的参数一定要是当前页面的布局文件中声明过的块。这样的 话Magento就可以只实例化需要用到的块，节省了资源，我们也可以根据需要为块设置不同的模板文件。</p>
+<p>我们修改local.xml文件如下<br><code>&lt;helloworld_index_index&gt; &lt;reference name=&quot;root&quot;&gt; &lt;block type=&quot;page/html&quot; name=&quot;root&quot;  template=&quot;../../../../../code/local/Alanstormdotcom/Helloworld/simple_page.phtml&quot;&gt; &lt;block type=&quot;page/template_links&quot; name=&quot;top.links&quot;/&gt; &lt;block type=&quot;customer/form_register&quot; name=&quot;customer_form_register&quot; template=&quot;customer/form/register.phtml&quot;/&gt; &lt;/block&gt; &lt;/reference&gt; &lt;/helloworld_index_index&gt;</code><br>清空Magento缓存，刷新页面，你会看到一排链接显示出来了。【译者注：如果你细心一点的话你会发现“top.links”块没有template属性，那是因为这个块的类中一定定义了默认的模板<br><code>protected function _construct() &#123; $this-&gt;setTemplate(&amp;#039;page/template/links.phtml&amp;#039;); &#125;</code><br>】</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这一章我们讲解了布局的基础知识。你可能会觉得这个很复杂，但是你也不必过分担心，因为平常使用Magento是不会用到这些知识 的，Magento提供的默认布局应该可以满足大部分需求。对于想要深入研究Magento的开发者来说，理解Magento的布局是至关重要的。布局， 块和模板构成了Magento MVC架构中的View，这也是Magento的特色之一。 </p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://m4ker.github.io/1819.html" data-id="cm4fsa2cf001pplv491kxdnlf" class="article-share-link">Share</a>
+      
+        <a href="https://m4ker.github.io/1819.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-1750" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
@@ -421,56 +579,9 @@
 
 
   
-    <article id="post-1739" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/1739.html">2011旅行计划</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/1739.html" class="article-date">
-  <time datetime="2011-07-11T12:57:03.000Z" itemprop="datePublished">2011-07-11</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <iframe width="500" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps/ms?msa=0&amp;msid=206941216320598858461.00049f108f86794b1467f&amp;hl=zh-CN&amp;ie=UTF8&amp;ll=33.219076,109.703979&amp;spn=21.413037,37.166749&amp;output=embed"></iframe>
-
-<p><small>在较大的地图中查看<a href="http://maps.google.com/maps/ms?msa=0&amp;msid=206941216320598858461.00049f108f86794b1467f&amp;hl=zh-CN&amp;ie=UTF8&amp;ll=33.219076,109.703979&amp;spn=21.413037,37.166749&amp;source=embed">线路 3.0</a></small></p>
-
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://m4ker.github.io/1739.html" data-id="cm4fsa2c8000tplv4ff71ftfj" class="article-share-link">Share</a>
-      
-        <a href="https://m4ker.github.io/1739.html#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/27/">27</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/12/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/14/">Next &raquo;</a>
     </nav>
   
 
@@ -485,7 +596,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">43</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
     </div>
   </div>
 
@@ -494,7 +605,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
