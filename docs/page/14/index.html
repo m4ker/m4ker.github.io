@@ -27,7 +27,7 @@
 
   
 
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <div id="container">
     <div id="wrap">
@@ -66,7 +66,7 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-1739" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-786" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -75,37 +75,46 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/1739.html">2011旅行计划</a>
+      <a class="article-title" href="/786.html">保留用户输入的错误数据</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/1739.html" class="article-date">
-  <time datetime="2011-07-11T12:57:03.000Z" itemprop="datePublished">2011-07-11</time>
+      <a href="/786.html" class="article-date">
+  <time datetime="2008-09-05T17:35:55.000Z" itemprop="datePublished">2008-09-06</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <iframe width="500" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps/ms?msa=0&amp;msid=206941216320598858461.00049f108f86794b1467f&amp;hl=zh-CN&amp;ie=UTF8&amp;ll=33.219076,109.703979&amp;spn=21.413037,37.166749&amp;output=embed"></iframe>
+        <p>最近公司项目比较闲， 所以很多时间都在整理代码， 这几天就又有了一个这样的需求， 当用户提交了错误的信息， 提示错误并保留用户输入的数据。</p>
+<p>起初第一个想法就是使用COOKIE, 后来又考虑使用$_SESSION, 其实两者无明显区别，大概流程是这样的， 每个请求的前面都加入下面的逻辑：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">if</span><span class="params">(有保存的数据)</span></span>&#123;</span><br><span class="line">    <span class="built_in">if</span>(数据是不是本动作产生的)&#123;</span><br><span class="line">        如果是则取得数据</span><br><span class="line">    &#125;</span><br><span class="line">    清空保存的数据</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">if</span><span class="params">(是一个POST请求)</span></span>&#123;</span><br><span class="line">    保存用户的请求数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><small>在较大的地图中查看<a href="http://maps.google.com/maps/ms?msa=0&amp;msid=206941216320598858461.00049f108f86794b1467f&amp;hl=zh-CN&amp;ie=UTF8&amp;ll=33.219076,109.703979&amp;spn=21.413037,37.166749&amp;source=embed">线路 3.0</a></small></p>
+
+<p>这样处理的话消息处理需要中间页跳转，就是说错误提示是一个单独的页面，这样基本可以做到将数据保存到下一个请求。这个方法后来在显示上比较麻烦，就是需要判断有没有取得的数据，有的话输出没有的话不输出， 如果使用模板引擎的话处理起来更加复杂， 于是又提出了另一种解决方案。</p>
+<p>将表单和处理程序放在一起（可能是一个function , MVC中应该是一个action中），这样的话需要显示表单或者处理数据要准备一套结构相同的数据传给页面，然后由本页显示错误消息， 不需要使用COOKIE.</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function <span class="built_in">actionCreate</span>()&#123;</span><br><span class="line">    <span class="built_in">if</span>(是POST请求)&#123;</span><br><span class="line">        过滤数据</span><br><span class="line">        验证数据并生成错误</span><br><span class="line">        <span class="built_in">if</span>(没有错误)&#123;</span><br><span class="line">            向数据库插入数据</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            将错误数据提交给显示层</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else <span class="built_in">if</span>(是GET请求并且必要参数正确)&#123;</span><br><span class="line">        从数据库取得显示数据提交给显示层</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        返回一个参数错误</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$this</span>-&gt;<span class="attribute">display</span>(&#x27;create.html&#x27;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以说这个方法是比较完美的， 目前来说没有什么不足之处， 但是有很多细节是需要注意的， 比如form的action要提交给自身并且携带参数， 虽然参数无作用， 但可以用来刷新页面(window.location.href&#x3D;window.location.href)， 显示层刷新页面的功能是必须的， 因为如果是修改操作那么输入错误之后将会保留错误的信息。</p>
+<p>接下来还可以通过控制错误消息的结构识别错误是由哪一个表单项产生的， 如果需要还可以对错误进行自动修改等等。</p>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/1739.html" data-id="cm4fsa2c8000tplv4ff71ftfj" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/786.html" data-id="cmpgk51v200lyssv9f4d53tol" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/1739.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/786.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BF%9D%E7%95%99%E6%95%B0%E6%8D%AE/" rel="tag">保留数据</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%94%99%E8%AF%AF/" rel="tag">错误</a></li></ul>
+
     </footer>
   </div>
   
@@ -113,7 +122,7 @@
 
 
   
-    <article id="post-1734" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-781" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -122,62 +131,15 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/1734.html">写在出发之前</a>
+      <a class="article-title" href="/781.html">工作不是生活的全部</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/1734.html" class="article-date">
-  <time datetime="2011-06-18T17:56:04.000Z" itemprop="datePublished">2011-06-19</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>再过21个小时就要踏上旅程，为了这趟行程，筹备了半年多，昨天拿到火车票，心里莫名的紧张与激动。</p>
-<p>转眼间已经在长春生活了5个年头，在这里学习，工作，生活，年复一年，日复一日。虽然每一步都是自己选择的，但总是感觉一切都是逼不得已，其实也没有选择，年初终于下定决心离开了工作三年多的单位，虽然薪水不少，平时也很克制，但还是由于种种原因没有攒下一毛钱。不过要感谢身边的朋友们，离职后的一个月我赚到了足够支持我整个旅程的钱，梦想还在那，从不曾因岁月而被遗忘。</p>
-<p>从明天开始，背上行囊，远走他乡，见证那遥远的荒芜与繁华。</p>
-
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/1734.html" data-id="cm4fsa2c6000mplv40k4n9e50" class="article-share-link">Share</a>
-      
-        <a href="https://blog.foolbird.net/1734.html#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-1713" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/1713.html">自制简易书架</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/1713.html" class="article-date">
-  <time datetime="2011-03-26T10:15:48.000Z" itemprop="datePublished">2011-03-26</time>
+      <a href="/781.html" class="article-date">
+  <time datetime="2008-08-29T04:24:31.000Z" itemprop="datePublished">2008-08-29</time>
 </a>
       
   <div class="article-category">
@@ -187,86 +149,27 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>想买一个书架很久了,网上买邮费比架子贵,去市场买价格偏高,今天去了二手市场,价格都不超过一百元,但是运费需要三五十.心里这个恨,反过来一想买一个太不值了,过一段时间就离开这里了,还拿不走就白买了,于是突发奇想.</p>
-<p><img src="/wp-content/uploads/2011/03/IMG_20110326_174657.jpg" title="IMG_20110326_174657"></p>
-<p><img src="/wp-content/uploads/2011/03/IMG_20110326_174726.jpg" title="IMG_20110326_174726"></p>
-<p>看上去还不错,实际上就是一个纸箱从中间割开的,然后再增加隔断,这种结构,可能放3个是极限,纸箱的承重非常有限,再想增加需要想办法增加稳定性和承重能力. </p>
-
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/1713.html" data-id="cm4fsa2c7000pplv49fdqbse9" class="article-share-link">Share</a>
-      
-        <a href="https://blog.foolbird.net/1713.html#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-1687" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/1687.html">PHP中静态调用非静态方法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/1687.html" class="article-date">
-  <time datetime="2011-03-06T12:23:50.000Z" itemprop="datePublished">2011-03-06</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>PHP7.0.0 中静态调用非静态方法会产生下面的提示，这种调用方法会在以后的版本中不再支持。<br>Deprecated: Non-static method foo::bar() should not be called statically in - on line 8</p>
+        <p>昨天看<a href="http://www.mifengtd.cn/">褪墨</a>的一篇文章, 里面有这么一个章节,看过之后很有感触.</p>
+<blockquote>
+<p><strong>工作不是生活的全部</strong></p>
+<p>你是不是经常在晚上和周末加班？如果你花费所有的时间在工作上，那你用什么时间去消费你赚的钱呢？不要因为放下手边额外的工作而有罪恶感，休闲时间和工作时间同等重要。从工作中得到满足感的确是令人高兴的事情，但是我们只是埋头工作的话，我们的生活会失去应有的平衡。</p>
 </blockquote>
-<p><strong><em>1.PHP中可以静态调用非静态方法么？</em></strong></p>
-<p>今天我被问到PHP中可不可以使用 className::methodName() 的方法来调用一个没有声明Static的方法。在我的印象中，我好像是见过这种用法，但又有些不确定。大家都知道，在手册或者教程里，方法被分为静态方法和非静态方法，通常我们静态调用的方法，肯定是静态方法。</p>
-<p>那如果我们调用了非静态方法会怎么样呢？首先做测试.</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;it works&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">test::<span class="title function_ invoke__">test</span>();</span><br></pre></td></tr></table></figure>
-<p>执行以下，返回错误如下<br><code>Fatal error: Non-static method test::test() cannot be called statically in /home/×××/test.php on line 7 Call Stack: 0.0002 332548 1\. &#123;main&#125;() /home/×××/test.php:0</code><br>这个时候，可能大家就会认为静态调用非静态方法是行不通的了，但其实，结论下的过早了，因为test()这个方法比较特殊，与类同名，是构造方法。</p>
-<p>我们继续测试。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;it works&#x27;</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;it works too&#x27;</span>;</span><br><span class="line">  &#125; </span><br><span class="line">&#125; </span><br><span class="line">test::<span class="title function_ invoke__">test2</span>();</span><br></pre></td></tr></table></figure>
-<p>执行结果：<br><code>it works too</code><br>这说明，<strong>静态调用非静态方法是可行的，但是静态调用构造方法是不可以的</strong>。为了验证这个结论，我又做了如下测试：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;</span><br><span class="line">  <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;it works&#x27;</span>;</span><br><span class="line">  &#125; </span><br><span class="line">&#125; </span><br><span class="line">test::<span class="title function_ invoke__">test</span>();</span><br></pre></td></tr></table></figure>
-<p>执行的结果如下：<br><code>Fatal error: Constructor test::test() cannot be static in /home/xxx/test.php on line 9</code><br>构造方法不能声明静态，所以上面的推论正确。</p>
-<p>但这个结果的确是很特殊的，因为可能<strong>只有PHP可以静态调用非静态方法</strong>，我用Java做了实验，如果静态调用非静态方法会报如下错误：<br><code>Cannot make a static reference to the non-static method showString() from the type HelloWorldApp</code><br>其他语言我没有一一尝试，但这已经足够来说明PHP的特殊之处，关于为什么PHP会有这样的情况我暂时没有找到相关说明。</p>
-<p><strong><em>2.静态调用非静态方法是否应该被应用？</em></strong></p>
-<p>那我们是不是可以使用这种方法来代替static方法呢？** 首先在代码的可读性上来看，静态调用非静态方法当然是不被推荐的**，这会让维护者产生疑惑。</p>
-<p>接下来我们再做一些实验，来看一下静态调用非静态方法在效率上是否会有一定的优势。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;<span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;&#125;&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$k</span>=<span class="number">0</span>; <span class="variable">$k</span>&lt;<span class="number">10000</span>; <span class="variable">$k</span>++)</span><br><span class="line">&#123;</span><br><span class="line">  test::<span class="title function_ invoke__">test2</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面代码在我这里的执行时间是18到28毫秒，我们再来测试标准的写法。</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">test</span></span>&#123;<span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;&#125;&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="variable">$k</span>=<span class="number">0</span>; <span class="variable">$k</span>&lt;<span class="number">10000</span>; <span class="variable">$k</span>++)</span><br><span class="line">&#123;</span><br><span class="line">  test::<span class="title function_ invoke__">test2</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面的代码执行时间在5到10毫秒之间，这样看来，静态调用非静态方法的效率要比标准的静态方法调用低的多，所以<strong>在效率上也不推荐静态调用非静态方法</strong>。 </p>
+<p>这说的的确很有道理, 有时候觉得每天的生活就是在工作, 特别是毕业之后, 学习的机会更少了. 我经常和朋友抱怨工作这样那样的不顺利, 这样那样的辛苦, 但后来才发现原来根本不用这样, 工作只是一种赚钱的手段而已.</p>
+<p>对我来说, 工作只能让我有东西吃, 有衣服穿, 有地方住, 除了学习之外工作只是为了赚钱, 再抽象一点说就是在用痛苦交换幸福.</p>
+<p>我想工作可能不能帮助任何人实现他们的梦想, 除非他们的梦想是给别人打工然后回家养活老婆孩子, 工作也不可能代替任何人的生活, 家庭, 感情, 梦想, 这些东西工作永远都不可能替代, 工作只是多数人在为少数人的生活, 家庭和梦想在努力而已.</p>
+<p><a href="&#039;/wp-content/uploads/2008/08/calendar.gif&#039;"><img src="http://www.foolbird.net/wp-content/uploads/2008/08/calendar-155x300.gif" title="calendar"></a></p>
+<p>昨天用Open Office做了这样一个表格, 然后恍然大悟, 工作之外, 做回我自己, 梦想就在眼前.</p>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/1687.html" data-id="cm4fsa2c4000fplv4g1n27qgm" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/781.html" data-id="cmpgk51uk00awssv9dlrhacq0" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/1687.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/781.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/" rel="tag">静态方法</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%B7%A5%E4%BD%9C/" rel="tag">工作</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li></ul>
 
     </footer>
   </div>
@@ -275,7 +178,7 @@
 
 
   
-    <article id="post-1668" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-771" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -284,15 +187,15 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/1668.html">国外PHP开源CMS系统一览</a>
+      <a class="article-title" href="/771.html">Ext学习笔记(1</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/1668.html" class="article-date">
-  <time datetime="2011-02-13T08:31:02.000Z" itemprop="datePublished">2011-02-13</time>
+      <a href="/771.html" class="article-date">
+  <time datetime="2008-08-07T08:13:41.000Z" itemprop="datePublished">2008-08-07</time>
 </a>
       
   <div class="article-category">
@@ -302,50 +205,160 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>Joomla!</strong></p>
-<p>Joomla! 是一套采用PHP+MySQL数据库开发，可跨平台运行的内容管理程序。Joomla!   除了具有新闻&#x2F;文章管理，文档&#x2F;图片管理，网站布局设置，模板&#x2F;主题管理等一些基本功能之外。还可通过其提供的上千个插件进行功能扩展包括：电子商务与购  物车引擎、论坛与聊天、日历、博客、目录分类管理、广告管理程序、电子报、数据收集与报表工具、期刊订阅服务等。<br>官方资源</p>
-<p>官方网站:<a href="http://www.joomla.org/">http://www.joomla.org</a></p>
-<p><strong>TYPO3</strong> – 扩展支持，功能强大</p>
-<p>Typo3 是一款开源的网站内容管理程序。Typo3 基于 PHP 和 MySQL。与一般的 CMS 不同，Typo3  对网站管理员的技术能力要求较高，其内部包含一系列完整的接口、函数和模块，使得Typo3的扩展功能开发十分灵活。Typo3  使用了模板分离技术，其模板使用了内置的 TypoScript 语言。Typo3 在企业级应用上表现出色。</p>
-<p>官方网站:<a href="http://typo3.org/">http://typo3.org</a></p>
-<p><strong>Pixie</strong> –  有扩展支持,模块,主题,插件,块(Blocks)</p>
-<p>Pixie是一款简单精致的轻型开源CMS。作为2009年Open Source CMS Award - 最具潜力开源CMS大奖的亚军，Pixie并不热衷于与其他同类系统竞争，他们的目标是打造一款“简单到连祖母都会使用”的建站系统，同时不失其强大的功能特色。</p>
-<p>Pixie严格遵循Web标准，在可用性及SEO方面表现出色；用户在安装Pixie时甚至可以提前选择不同的预设安装包来打造博客、商业网站等不同类型的站点。</p>
-<p>官方网站:<a href="http://www.getpixie.co.uk/">http://www.getpixie.co.uk</a></p>
-<p><strong>XOOPS</strong></p>
-<p>XOOPS 是一套开源的内容管理程序，衍生自 PHP-Nuke，采用PHP语言跟MySQL数据库。功能、界面全部模板化设计，可用于构建各种网络社区。XOOPS 的发布采用GPL协议，可免费使用和修改；在遵循GPL相关条款的前提下，可自由再发布。</p>
-<p>XOOPS  的用途很广泛，对于个人用户，可以启用XPress模块（针对XOOPS的WordPress），作为个人的网志。对于较大规模的网站，可以根据需要，启  用更多的模块，如新闻发布、论坛、资源下载、友情链接，以及在线购物、广告管理等，对于Wiki、RSS，XOOPS也有相应的模块。</p>
-<p>在国际语言支持方面，XOOPS有十种以上的语言版本，包括简体中文、繁体中文，编码可自由选择采用GB 2312、BIG 5或是UTF-8。<br>官方资源</p>
-<p>官方网站:<a href="http://www.xoops.org/">http://www.xoops.org</a></p>
-<p><strong>Textpattern</strong> –  没有扩展支持</p>
-<p>Textpattern 是一款简洁而又漂亮的CMS，主题很素雅，留有很大的个性化空间。内置Textile写作语法，所以用户不必懂得 HTML标签语法也能轻松写作。预设主题非常简洁，但可定制程度很高。Textpattern采用 PHP+MySQL构建，代码体积小，效率高，网页访问速度快。目前已支持包含中文在内的多种语言。Textpattern 适合做风格清新简练的博客。</p>
-<p>官方资源</p>
-<p>官方网站:<a href="http://textpattern.com/">http://textpattern.com</a></p>
-<p><strong>ImpressCMS</strong> –  有很多扩展，Modules和Themes。</p>
-<p>2009年Open Source CMS Award - 最具潜力开源CMS大奖冠军得主。基于MySQL驱动的模块化的内容管理系统。网站内容由各自独立的内容模块进行管理，用户可以按照自己的需求来安装相应的模块，当前可用的模块包括：新闻发布，论坛，相册以及其它各类第三方模块扩展。</p>
-<p>官方网站:<a href="http://www.impresscms.org/">http://www.impresscms.org</a></p>
-<p><strong>SilverStripe</strong> –  Module,Theme,Widget,扩展较多</p>
-<p>SilverStripe是一款功能强大的CMS内容管理系统，具有强大的网站设计功能，直观和友好的用户操作界面。采用MVC框架设计开发并运用了Ajax技术。易于扩展。所有页面都符合XHTML标准并基于模板生成。安装需要PHP5和MySQL环境支持，内置所见所得编辑的文本编辑器TinyMCE。文件管理界面采用了AJAX技术，可仅通过简单的拖曳，来调整文件树和链接关联。</p>
-<p>官方网站:<a href="http://silverstripe.org/">http://silverstripe.org</a></p>
-<p><strong>MODx</strong> –  从官方网站上看，用户体验非常烂，有扩展功能，但看上去乱七八糟的，源码包也太大了。</p>
-<p>MODx 是一个开源的 PHP 应用框架，可以帮助使用者控制自己的网上内容。它是开发人员和高级用户理想的控制系统，任何人都可以使用 MODx 发布、更新、维护动态网站，或 html 静态页面的网站内容。</p>
-<p>MODx 也是 CSS 布局的 Ajax CMS ，是一个完全符合 XHTML 标准规范的 php 内容管理系统（CMS），内部集成的 MooTools、Scriptaculous 和 Prototype 库，MODx系统能够帮助用户、开发者和CSS设计者或Ajax爱好者快速建立“Web 2.0”网站。</p>
-<p>官方网站:<a href="http://modxcms.com/">http://modxcms.com</a></p>
-<p><strong>ExpressionEngine</strong> – 收费的</p>
-<p>ExpressionEngine 是 EllisLab 推出的内容管理程序，它包含一个免费的“核心”版本，和一次性收费的“个人”及“商业”版本。ExpressionEngine 是基于 CodeIgniter 开发（CodeIgniter 也是 EllisLab 的产品）构架的，这也使得它能得到更多的PHP程序员的支持，从而开发出更多的插件和模块。ExpressionEngine 的后台管理面板很精美，依靠 AJAX 技术实现了不少只有在桌面软件中才有的效果，采用jQuery更是给插件的开发带来了许多方便。</p>
-<p>官方网站:<a href="http://expressionengine.com/">http://expressionengine.com</a></p>
-<p>国外优秀的CMS项目还有很多, 以上整理了一些比较有名气的, 当然其他不知名的CMS系统中也不乏优秀作品. </p>
+        <p>昨天用了一下午学习Ext, 搞了一下午最后连个表格都没搞出来, 今天继续, 顺便记录一下.</p>
+<p>中文在线手册 <a href="http://www.ajaxjs.com/docs/">http://www.ajaxjs.com/docs/</a></p>
+<p><span style="color: #ff0000;">这里请大家注意一下， 看手册一定要看源码包里的那个docs目录里的， Ext手册版本差异很大， 不一定最新的就一定适用。</span></p>
+<p>使用Ext之前需要加载Ext库, 昨天直接加载核心, 竟然不好用, 最后看例子里面是加载了两个文件, 原因还没搞清楚, 但先记下来.</p>
+<p>&lt;script type&#x3D;”text&#x2F;javascript” src&#x3D;”..&#x2F;ext-2.2&#x2F;adapter&#x2F;ext&#x2F;ext-base.js”&gt;&lt;&#x2F;script&gt;<br>&lt;script type&#x3D;”text&#x2F;javascript” src&#x3D;”..&#x2F;ext-2.2&#x2F;ext-all.js”&gt;&lt;&#x2F;script&gt;</p>
+<p>最基础的</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ext.onReady(fn)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个和Jquery的$(fn)是一样的, 就是页面加载完毕执行fn</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ext.<span class="built_in">get</span>(<span class="string">&#x27;idName&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这个就是Jquery中的$(‘#idName’), 返回一个Ext的Element对象.</p>
+<p>Element.dom是该对象的DOM节点, 其他内容看手册里的Element部分</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ext.<span class="keyword">select</span>(<span class="string">&#x27;p&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个类似Jquery中的$(‘p’), 但是Ext中没有each, Ext.select(‘p’).methodName()直接就作用在全部对象上.</p>
+<p>事件绑定</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Element</span>.<span class="keyword">on</span>(<span class="string">&#x27;click&#x27;</span>, fn);</span><br></pre></td></tr></table></figure>
+
+<p>获得事件句柄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">clicked = <span class="keyword">function</span>(e)&#123;</span><br><span class="line">  Ext.get(e.target).highlight();//e.target为触发该事件的对象<span class="built_in">id</span>, highlight是高亮闪烁</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Ext.<span class="keyword">select</span>(<span class="string">&#x27;p&#x27;</span>).on(<span class="string">&#x27;click&#x27;</span>,clicked);</span><br></pre></td></tr></table></figure>
+
+<p>消息框<br>Ext.MessageBox为Ext的消息对象.</p>
+<p>Ajax<br>ajax部分和Jquery非常相像了</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Ext.<span class="keyword">get</span>(<span class="string">&#x27;msg&#x27;</span>).<span class="keyword">load</span>(&#123;</span><br><span class="line">url: <span class="string">&#x27;http://test/ext/data.php&#x27;</span>,</span><br><span class="line">params: <span class="string">&#x27;name=1&#x27;</span>,</span><br><span class="line"><span class="type">text</span>: <span class="string">&#x27;Updating...&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/1668.html" data-id="cm4fsa2c5000iplv48fx672mv" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/771.html" data-id="cmpgk51uk00aussv999cg6pxq" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/1668.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/771.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CMS/" rel="tag">CMS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BC%80%E6%BA%90/" rel="tag">开源</a></li></ul>
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-747" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/747.html">长城在哪里?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/747.html" class="article-date">
+  <time datetime="2008-05-12T05:47:00.000Z" itemprop="datePublished">2008-05-12</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>刚刚在玩Google Earth, 在美国逛了一大圈之后又在国内逛, 逛到北京就想起来看看长城什么样子, 从小到大, 我都没出过吉林省. 在北京附近找了好一阵子, 大概20分钟, 才差不多确定长城的位置. 但基本上什么也看不到, 我一直对在太空能看到长城的说法深信不疑, 没想到, 放到最大都看不到.</p>
+<p><a href="/wp-content/uploads/2008/05/greatwall.jpg"><img src="http://www.foolbird.net/wp-content/uploads/2008/05/greatwall-300x226.jpg" alt="where is the great wall" title="greatwall"></a></p>
+<p>谁在上面这个图上看到长城了记得告诉我.</p>
+<p>像我这样的好孩子在小的时候就听老师讲在太空能看见的唯一建筑就是长城, 而且不只是老师讲, 教科书上也是这么说的, 真太失望了. 只有google一下, 发现原来这个问题在几年前引发过大规模的讨论.</p>
+<blockquote>
+<p>曾在太空站工作的宇航员威廉·博格在１９９１年出版的《在太空中如何盥洗》一书中说，在那样的高度上已无法用肉眼看到长城，而需要用望远镜才能看到。</p>
+<p>２０００年凤凰卫视曾采访第一批登上月球的宇航员之一奥尔德林。他说，在月球上是看不到万里长城的，长城是狭窄而不规则的，在轨道上，很难看到不规则的事物。</p>
+<p>２０００年５月４日，首位太空游客蒂托在接受记者采访时也说，我从中国上空飞过时看到了中国的河流和山脉，但<span style="color: #ff0000;">没有看到中国的长城</span>。</p>
+<p>２００３年１０月中国首位宇航员杨利伟返回地球后表示：“看到地球景色非常美丽，但我<span style="color: #ff0000;">没有看到我们的长城</span>。”</p>
+<p>２００４年年初，全国政协委员王翔在政协会议上的提案要求有关部门尽快纠正小学语文课本第七册课文《长城砖》中有关宇航员肉眼能看到长城的错误，教育部对此公开答复表示纠错工作正在进行。</p>
+<p>美国宇航员尤金·塞尔南２００４年２月访问新加坡时表示，“在高度为１６０－３２０公里的地球轨道上，中国的长城的确可以用肉眼看到”。国际空间站远征七队的科学官埃德·刘也赞同他的观点。</p>
+<p>２００４年５月１１日欧洲空间局网站首页以“从太空看中国长城”为题，发布了一张“普罗巴”卫星３月２５日过境时获取的高分辨率卫星图像，文字说明指出，该图右上方一条蜿蜒曲折的细线条是延伸７２４０公里的长城。该公告还认为，如果天气、光照等条件适合，宇航员可以用肉眼看到长城。</p>
+<p>公告刊出仅一天后，美国宇航局网站转发了这条信息和图像。两家国际公认的空间科技权威机构发布的信息立刻引起广泛关注，类似“从太空看到长城并非神话”的报道出现于内地多家媒体，还有文章“叫停”政协委员建议小学语文课本应纠错的提案。</p>
+<p>与此同时，质疑和否定的意见也纷纷见诸报端和网站。复旦大学和美国加州大学的学者首先提出不可能是长城，根据立体效应和翻转１８０度看，图像很明显是一条汇聚水流的山沟。</p>
+<p>２００４年５月１９日欧空局发布纠错公告，承认此前公布的图像发生解释错误，把一条注入密云水库的河流误判为长城，至于那条被判为运河的影像是否有错和宇航员能否看到长城等问题则未提及。</p>
+<p>２００４年５月２７日，北京市测绘设计研究院的科技人员用航片、１：１万地形图与欧空局的图像进行叠加分析后提出新的看法，长城、河流之说都不正确，是条山间公路。</p>
+</blockquote>
+<p>真TMD的郁闷被这个谎言忽悠了十几年, 而且深信不疑, 现在这年头, 媒体不可信, 书籍也不可信, 连小学教材都不可信, Ch<em>ne</em>e 的教育真TMD….. 幸好我学习不太好, 要么现在肯定成白痴了.</p>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/747.html" data-id="cmpgk51uk00arssv97j37geos" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/747.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Google-Earth/" rel="tag">Google Earth</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%AA%E7%A9%BA/" rel="tag">太空</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%95%BF%E5%9F%8E/" rel="tag">长城</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-744" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/744.html">面向对象的访问控制</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/744.html" class="article-date">
+  <time datetime="2008-05-05T02:15:35.000Z" itemprop="datePublished">2008-05-05</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这两天有在看php5的面向对象的一些教程, 因为php4用的比较多,所以对面向对象这个概念并不是很熟悉.</p>
+<p>这里只是简单记录一下关于public, private和protected.</p>
+<p>public(公共的)应该比较容易理解, 完全公开, 任何地方都可以访问, 包括该类内部, 外部, 子类等等.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">a</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="variable">$a</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;a = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">b</span> <span class="keyword">extends</span> <span class="title">a</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> a;</span><br><span class="line"><span class="variable">$a</span>-&gt;<span class="title function_ invoke__">test</span>();</span><br><span class="line"><span class="comment">// 这里说明public属性对象内部可访问, 而该语句没报错是</span></span><br><span class="line"><span class="comment">// 因为test方法也可以访问, 说明方法默认为public</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$a</span>-&gt;a; <span class="comment">// 这里说明public属性外部也可以访问</span></span><br><span class="line"><span class="variable">$b</span> = <span class="keyword">new</span> b;</span><br><span class="line"><span class="variable">$b</span>-&gt;<span class="title function_ invoke__">test2</span>(); <span class="comment">// 这里说明public属性在子类中可以访问</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$b</span>-&gt;a;  <span class="comment">// 这里说明public属性在子类外部也可以访问</span></span><br></pre></td></tr></table></figure>
+
+<p>private(私有的)可以理解为只有对象的内部可以访问, 但是其中有可比较难理解的概念, 就是继承来的public方法可以访问到父类的private方法和属性, 而且实际上private属性和方法在技术上是无法被覆写的, 这个我目前还没有研究太透彻.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">c</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$a</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="variable language_">$this</span>-&gt;a = <span class="string">&quot;2&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">d</span> <span class="keyword">extends</span> <span class="title">c</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">e</span> <span class="keyword">extends</span> <span class="title">c</span></span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="variable">$a</span>=<span class="string">&quot;3&quot;</span>;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$c</span> = <span class="keyword">new</span> c;</span><br><span class="line"><span class="variable">$c</span>-&gt;<span class="title function_ invoke__">test</span>();<span class="comment">// 这里说明private属性对象内部可访问</span></span><br><span class="line"><span class="comment">// echo $c-&gt;a; // 这里会报错说明private属性外部不可以访问</span></span><br><span class="line"><span class="variable">$d</span> = <span class="keyword">new</span> d;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;[&#x27;</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;<span class="title function_ invoke__">test</span>(); <span class="comment">// 这里输出2,说明在test()中可以访问到class c 的$a</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;]&#x27;</span>;</span><br><span class="line"><span class="variable">$d</span>-&gt;<span class="title function_ invoke__">test2</span>(); <span class="comment">// 这里没有产生输出说明private属性在子类中不可见</span></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$d</span>-&gt;a;  <span class="comment">// 这里也没有产生输出说明private属性在子类外部也是不可见的</span></span><br><span class="line"><span class="variable">$e</span> = <span class="keyword">new</span> e;</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&#123;&#x27;</span>;</span><br><span class="line"><span class="variable">$e</span>-&gt;<span class="title function_ invoke__">test</span>();  <span class="comment">// 这里输出2, 说明该方法可见, 但访问的是父类的$a</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line"><span class="variable">$e</span>-&gt;<span class="title function_ invoke__">test2</span>();</span><br><span class="line"><span class="comment">// 这里输出了3说明$a被覆写了, 但其实在class e中</span></span><br><span class="line"><span class="comment">// 其父类的$a并不可见,所以并不是覆写而是创建</span></span><br></pre></td></tr></table></figure>
+
+<p>protected (受保护的)我个人理解就是在对象和子对象中你想怎么用都可以, 就是不可以在外面用.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">f</span></span>&#123;</span><br><span class="line">	<span class="keyword">protected</span> <span class="variable">$a</span> = <span class="string">&quot;4&quot;</span>;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">g</span> <span class="keyword">extends</span> <span class="title">f</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="keyword">echo</span> <span class="variable language_">$this</span>-&gt;a;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="variable">$f</span> = <span class="keyword">new</span> f;</span><br><span class="line"><span class="variable">$f</span>-&gt;<span class="title function_ invoke__">test</span>(); <span class="comment">// 这里产生了输出,说明protected属性对象内部可以访问</span></span><br><span class="line"><span class="comment">//echo $f-&gt;a; // 这里报错说明protected属性对象外部不可以访问</span></span><br><span class="line"><span class="variable">$g</span> = <span class="keyword">new</span> g;</span><br><span class="line"><span class="variable">$g</span>-&gt;<span class="title function_ invoke__">test2</span>(); <span class="comment">// 这里输出4,说明protected属性在子类中可以访问</span></span><br><span class="line"><span class="variable">$g</span>-&gt;<span class="title function_ invoke__">test</span>();  <span class="comment">// 这里输出4,说明protected属性在子类中可以访问</span></span><br><span class="line"><span class="comment">// echo $g-&gt;a;  //这里报错,说明protected属性在子类的外部不可访问</span></span><br></pre></td></tr></table></figure>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/744.html" data-id="cmpgk51uj00aossv96n2u3ivn" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/744.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" rel="tag">面向对象</a></li></ul>
 
     </footer>
   </div>
@@ -356,7 +369,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/15/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/13/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="page-number" href="/page/16/">16</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/15/">Next &raquo;</a>
     </nav>
   
 
@@ -371,7 +384,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">43</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">44</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
     </div>
   </div>
 
@@ -380,7 +393,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -392,7 +405,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2006 - 2024 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+      &copy; 2006 - 2026 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
     </div>
   </div>
 </footer>

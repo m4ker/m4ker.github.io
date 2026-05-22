@@ -27,7 +27,7 @@
 
   
 
-</head>
+<meta name="generator" content="Hexo 7.3.0"></head>
 <body>
   <div id="container">
     <div id="wrap">
@@ -66,7 +66,7 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-1442" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-711" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -75,36 +75,48 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/1442.html">2008.11 in Beijing</a>
+      <a class="article-title" href="/711.html">关于错误消息的跳转</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/1442.html" class="article-date">
-  <time datetime="2009-06-11T12:19:41.000Z" itemprop="datePublished">2009-06-11</time>
+      <a href="/711.html" class="article-date">
+  <time datetime="2008-03-31T23:43:59.000Z" itemprop="datePublished">2008-04-01</time>
 </a>
       
   <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a>
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
   </div>
 
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p><img src="/wp-content/uploads/2009/06/2008inbeijing.jpg" alt="2008inbeijing" title="2008inbeijing"></p>
+        <p>下午在做项目的后期测试, 发现错误消息那里会出现一些问题.</p>
+<p>为了能保存用户出错之前输入的数据,错误页使用了javascrtp中的history.go(-1)返回出错的页面. 但今天发现在ie下返回页面显示页面已过期,火狐3.0下要求重新发送请求.</p>
+<p>在网上找了一下,用</p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">session_cache_limiter</span>(<span class="string">&#x27;private&#x27;</span>);</span></span><br></pre></td></tr></table></figure>
+<p>可以解决, 但是究竟为什么还没有看明白, 这个函数没有中文版的讲解.</p>
+<p>大概这么用:</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">session_cache_limiter</span>(&#x27;nocache&#x27;);  <span class="comment">// 清空表单</span></span><br><span class="line"><span class="built_in">session_cache_limiter</span>(&#x27;private&#x27;);   <span class="comment">//不清空表单，只在session生效期间</span></span><br><span class="line"><span class="built_in">session_cache_limiter</span>(&#x27;public&#x27;);   <span class="comment">//不清空表单，如同没使用session一般</span></span><br></pre></td></tr></table></figure>
+<p>不过这样做有一点不妥, 就是原页刷新表单也不会被清空, 验证码在ie下会被缓存.</p>
+<p>还有就是错误跳转那里</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">window</span>.<span class="property">onload</span> = <span class="built_in">setTimeout</span>(<span class="string">&#x27;history.go(-1)&#x27;</span>,<span class="number">3000</span>);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这样写ie下会有一个错误, 没深究, 因为opera不支持onload方法,所以一般用下面这样.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">jumpto = <span class="keyword">function</span>(<span class="params"></span>)&#123;<span class="built_in">setTimeout</span>(<span class="string">&#x27;history.go(-1)&#x27;</span>,<span class="number">3000</span>);&#125;;</span></span><br><span class="line"><span class="language-javascript"><span class="variable language_">window</span>.<span class="property">onload</span> = jumpto;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>还好没有什么错误, 只是不标准而已.</p>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/1442.html" data-id="cm4fsa2bt0002plv44y9l1o1k" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/711.html" data-id="cmpgk51ui00a6ssv94qzn1upo" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/1442.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/711.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8C%97%E4%BA%AC/" rel="tag">北京</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/session/" rel="tag">session</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B7%B3%E8%BD%AC/" rel="tag">跳转</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%94%99%E8%AF%AF/" rel="tag">错误</a></li></ul>
 
     </footer>
   </div>
@@ -113,7 +125,7 @@
 
 
   
-    <article id="post-1325" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-695" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -122,15 +134,15 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/1325.html">生活仍在继续</a>
+      <a class="article-title" href="/695.html">清除了该死的dtajxne.exe!</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/1325.html" class="article-date">
-  <time datetime="2008-12-29T12:53:05.000Z" itemprop="datePublished">2008-12-29</time>
+      <a href="/695.html" class="article-date">
+  <time datetime="2007-12-21T22:21:24.000Z" itemprop="datePublished">2007-12-22</time>
 </a>
       
   <div class="article-category">
@@ -140,24 +152,32 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>被和谐差不多两个月了， 电脑坏掉了加上最近工作比较忙， 所以这么久才把新域名弄好， 赶紧写点什么， 证明我还建在。</p>
-<p>10月末被和谐的， 原因嘛， 不说了， 怪郁闷的， 说点实话比啥都难。 以前被和谐几次换个ip就ok了， 没想到这次换啥都不灵了， 只能把米换了，这次有机记性了， 以后敏感话题一律都不对外发表。</p>
-<p>六月份买的电脑莫名其妙总死机， 折腾几个月了， 也没修出什么名堂， 拿维修站检测说死也不死机， 拿回来不到10分钟就死的一塌糊涂， 后来更过分， 只在windows下死再ubuntu下一切正常， 后来没辙把电脑搬单位去了， 最近忙也没时间研究， 只能先放着， 过年家里没人免得丢了。</p>
-<p>最近两个月够忙活的， 11月初赶上上个项目结束， 日本老板来国内， 那个压力呀， 天天忙活， 天天赶进度还加班。 11月末去了趟北京， 逛了4天感触颇深， 北京也不过如此， 现在这个情况让我挺犹豫的， 我所看到的再加上最近经济不景气各大公司大量裁员造成的就业压力， 合同马上到期了我正考虑明年是不是出去发展， 其实很多东西还是让我挺留恋的。</p>
-<p>从北京回来公司开始用symfony做新项目， 最近一个月学到了不少东西， 作为世界顶尖的开发框架， 果然非同凡响， 项目质量和效率都直线上升， 估计把symfony吃透得用个一年左右， 吃透这个最少也能折腾个三五年， 作为一个php开发人员， 对于php和symfony的前景， 我还是相当有信心的。</p>
-<p>最近和两个同事一起转移到ubuntu阵营了， 这次都做的比较绝， 彻底干掉了windows， 半个多月下来， 感觉还是挺好的， 除了不能用支付宝， 其他一切ok， 工作效率上的提升的确是可以看到的， 所以以后会一直坚持下去， 向更深层次发展。</p>
-<p>电脑坏了之后晚上就没有什么用电脑的机会了， 所以最近休息的不错， 白天也不怎么困了， 晚上回去看看电视， 打打扑克， 锻炼锻炼身体就到睡觉点了。 仔细算一算， 除了上网查资料和再淘宝买东西， 有快五十天没在网上露过面了， 最近项目收尾， 工作比较琐碎， 今天上了会儿QQ， 真的是好久不见了， 真没想到会又这么多朋友和我打招呼， 以前天天挂着都是不说话的， 寒暄上两句真让我挺感动的。</p>
-<p>再过两天就元旦了， 又是新的一年， 一转眼工作一年多了， 真不可思议， 昨天买了元旦的火车票， 3个月没回家了， 回去看看爸妈。</p>
+        <p>昨天早上在公司的电脑上感觉不太对劲, ie打开个新链接就自动关掉了, 试了好多次都不行, 感觉象是中毒了, 因为我从来不装杀毒软件的, 所以就在公司的服务器上拉过来一个安全卫士, 没想到安全卫士也一打开就关上了, 研究了半天也没研究明白是怎么回事, 后来公司陈哥发现我的电脑中毒了, 一种叫dtajxne.exe的病毒, 一种非常顽强的病毒, 最要命的是没有专杀工具.</p>
+<p>于是我和陈哥开始研究手动杀, 大概半个小时之后被陈哥清除掉了 .</p>
+<p>晚上下班去了网吧,  因为清除病毒的时候发现有autorun.inf, 我怀疑这个东西已经传到我的手机和笔记本里了,  去网吧一看果然有.  回寝室之后发现果然笔记本也中了,今天休息, 抽点时间研究了下.</p>
+<p>dtajxne.exe的症状如下:</p>
+<ul>
+<li>每个分区下都有隐藏文件”xiwiiuy.exe”和”autorun.inf”.</li>
+<li>通过任务管理器查看进程有dtajxne.exe和akpfhtq.exe</li>
+<li>很多程序, 比如杀毒软件和ie的窗口打开会被自动关闭</li>
+<li>使用msconfig命令查看系统启动时发现两项自启动项:”C:\Program Files\Common Files\System\akpfhtq.exe”与”C:\Program Files\Common Files\Microsoft Shared\dtajxne.exe”</li>
+</ul>
+<p>解决方法:</p>
+<p>在msconfig中禁用 dtajxne.exe和akpfhtq.exe无效, 在注册表中删除相关键值也无效, 病毒主程序meex.exe在windows下看不到.</p>
+<p>在网上看了很多帖子都要进入ntfsdos下进行查杀, 但不知道为什么我用光盘进入ntfsdos下还是无法访问ntfs的目录, 所以放弃了这个方法.</p>
+<p>没办法只能尝试用安装盘中的windows xpe, 在xpe下删除了”C:\Program Files\Common Files\System\”和”C:\Program Files\Common Files\Microsoft Shared\”目录中的dtajxne.exe和akpfhtq.exe,在”C:\Program Files\”下删除了meex.exe,然后进入每个分区删除隐藏文件”xiwiiuy.exe”和”autorun.inf”,接下来启动windows xp, 在注册表中搜索dtajxne.exe,akpfhtq.exe和xiwiiuy.exe,将相关键值全部清理掉,最后运行msconfig,禁用”C:\Program Files\Common Files\System\akpfhtq.exe”和”C:\Program Files\Common Files\Microsoft Shared\dtajxne.exe”,退出msconfig重启电脑,病毒清除.</p>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/1325.html" data-id="cm4fsa2bq0001plv45iyabzmz" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/695.html" data-id="cmpgk51uh00a4ssv9c3r11xok" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/1325.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/695.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/akpfhtq/" rel="tag">akpfhtq</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dtajxne/" rel="tag">dtajxne</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%80%E6%AF%92/" rel="tag">杀毒</a></li></ul>
+
     </footer>
   </div>
   
@@ -165,7 +185,7 @@
 
 
   
-    <article id="post-792" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-692" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -174,15 +194,15 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/792.html">url重写后的路径问题</a>
+      <a class="article-title" href="/692.html">安装pear</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/792.html" class="article-date">
-  <time datetime="2008-10-17T04:09:04.000Z" itemprop="datePublished">2008-10-17</time>
+      <a href="/692.html" class="article-date">
+  <time datetime="2007-12-12T22:21:24.000Z" itemprop="datePublished">2007-12-13</time>
 </a>
       
   <div class="article-category">
@@ -192,36 +212,22 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>以前用FleaPHP的url_rewrite模式一直有一个很头痛的问题, 就是页面上相关资源的路径问题.</p>
-<p>问题大概是这样的, 为了让url更加友好我们使用apache的mod_rewrite将类似</p>
-<p><a href="http://localhost/?controller=default&action=index&a=1">http://localhost/?controller=default&amp;action=index&amp;a=1</a></p>
-<p>这样的路径重写成</p>
-<p><a href="http://localhost/default/index/a/1">http://localhost/default/index/a/1</a></p>
-<p>或者</p>
-<p><a href="http://localhost/default/index/a/1.html">http://localhost/default/index/a/1.html</a></p>
-<p>这样, 但是如果是这样那么浏览器请求页面相关资源的基地址就发生了改变, 从原来的documentroot下变成了documentroot&#x2F;default&#x2F;index&#x2F;a, 如果你要在页面上显示一个图片 1.jpg, 那么原来本来应该在documentroot&#x2F;1.jpg下找到的文件却变成了documentroot&#x2F;default&#x2F;index&#x2F;a&#x2F;1.jpg, 那结果肯定是找不到的.</p>
-<p>为了解决这个问题以前用过很多方法, 用的最多的就是使用绝对路径来解决这个问题, 这是有一个前提的, 就是程序一定要放在虚拟机的根目录下, 这样在html中要将所有的资源都是用&#x2F;开头, &#x2F;的意思是从根目录下开始寻找, 在localhost下的任何一个程序在任何目录中使用&#x2F;1.jpg都会被指向documentroot&#x2F;1.jpg, 这里再强调一个概念, “.&#x2F;“是当前目录, “..&#x2F;“是上级目录, “&#x2F;“是根目录.</p>
-<p>上面这个方法实际上已经可以解决这个问题了, 但是有局限, 就是程序的目录是固定的, 一定要在虚拟机根目录下, 这样或多或少会带来一些麻烦, 至少我觉得调试不方便. 于是又有了第二个解决方案, 也就是上面方案的升级版. 我们在全局定义一个常量 define(&#039;PRE_DIR&#039;, &#039;&#x2F;&#039;); 这样的话要将程序中所有的资源路径都写成类似 <?php echo PRE_DIR;?>dir&#x2F;filename.jpg, 这样的话资源会被定为到 &#x2F;dir&#x2F;filename.jpg, 如果要将程序放在二级目录 test&#x2F;下的话, 只要将PRE_DIR的值改成&#039;&#x2F;test&#x2F;&#039;就可以了.</p>
-<p>其实在这之后又有了升级版, 但是不打算介绍太多, 因为这不是重点, 在手动改目录之后大家就想到要程序自动检测当前目录, 这个以前有做过, 是个不错的想法, 代码不少, 但是找不到了.</p>
-<p>还有个东西我觉得比较神奇的, smarty有一个自动替换的插件, 可以自动在所有模板的资源链接前面加前缀, 当然前提是你已经定义了这个前缀, 插件名不记得了, 太久不用找不到了.</p>
-<p>还是说重点吧, 昨天<a href="http://bobhero.net/">bobhero</a>给我提供了一个新的思路, 利用mod_rewrite重新对资源进行定向, 后来到网上找相关的资料, 没有找到, 只找到了一些mod_rewrite的教程什么的. 研究了一下午也没研究出来, 因为url太复杂了, 很多情况都要考虑进去, 正则说什么就写不明白了, 今天早上终于搞定了.</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#.htaccess</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">RewriteEngine</span> <span class="literal">on</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">RewriteCond</span> <span class="variable">%&#123;REQUEST_FILENAME&#125;</span> !-f</span><br><span class="line"><span class="attribute">RewriteRule</span> ^([^.]*)(\.html)?$ index.php/$<span class="number">1</span><span class="meta"> [L]</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">RewriteCond</span> <span class="variable">%&#123;REQUEST_FILENAME&#125;</span> !-f</span><br><span class="line"><span class="attribute">RewriteRule</span> ^([^/]*)/(.*\..*)$ $<span class="number">2</span></span><br></pre></td></tr></table></figure>
-<p>起作用的其实就这些东西,  可能还会有错误, 不过的确生效了.简单解释一下, RewriteCond %{REQUEST_FILENAME} !-f是条件语句, 意思是说如果请求的文件不存在下面的规则才生效. 第一条规则RewriteRule ^([^.]*)(.html)?$ index.php&#x2F;$1 [L]是FLEAPHP的重写规则.</p>
-<p>下面两条才是为了解决路径问题的, RewriteRule ^([^&#x2F;]*)&#x2F;(.<em>..</em>)$ $2的作用大概是这样, 比如url是这样controller&#x2F;action&#x2F;page&#x2F;1,那么该页的style&#x2F;css.css可能变成了controller&#x2F;action&#x2F;page&#x2F;style&#x2F;css.css, 这条语句就是要将controller&#x2F;action&#x2F;page&#x2F;style&#x2F;css.css指向action&#x2F;page&#x2F;style&#x2F;css.css, 而由于某种机制请求每更换一次目录就会再执行一次根目录下的.htaccess中的重写规则, 由于action&#x2F;page&#x2F;style&#x2F;css.css也不存在所以又被定向到page&#x2F;style&#x2F;css.css, 同理page&#x2F;style&#x2F;css.css也不存在, 再向上 style&#x2F;css.css, 由于文件存在而不再执行重写规则, 向用户返回style&#x2F;css.css的内容.</p>
-<p>总的来说最后的这个方法除了apache受点累还是很完美的, 这样大概可能每个资源请求都会被重定向4次以上, 目前还不清楚对执行效率有多大的影响.</p>
-<p><strong>参考资料:</strong></p>
-<p><a href="http://hedong.3322.org/archives/000346.html">竹笋炒肉:Apache的Mod_rewrite学习</a></p>
+        <p>可以通过界面安装, <a href="http://go-pear.org/">http://go-pear.org</a>, 在php中include就可以调开始界面安装了.</p>
+<p>还可以通过php安装程序中的go-pear.bat来进行安装.</p>
+<p>按照选项进行安装,然后修改php.ini</p>
+<p>include_path &#x3D; “.;c:\php\pear\”</p>
+<p>安装完毕.</p>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/792.html" data-id="cm4fsa2eg00b2plv4g5yk1zn6" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/692.html" data-id="cmpgk51ug009rssv9ag7t7erp" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/792.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/692.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mod-rewrite/" rel="tag">mod_rewrite</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B7%AF%E5%BE%84/" rel="tag">路径</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%87%8D%E5%86%99/" rel="tag">重写</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pear/" rel="tag">pear</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E8%A3%85/" rel="tag">安装</a></li></ul>
 
     </footer>
   </div>
@@ -230,7 +236,7 @@
 
 
   
-    <article id="post-787" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-693" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -239,15 +245,15 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/787.html">使用PHP收发邮件</a>
+      <a class="article-title" href="/693.html">windows下安装symfony</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/787.html" class="article-date">
-  <time datetime="2008-09-09T05:59:13.000Z" itemprop="datePublished">2008-09-09</time>
+      <a href="/693.html" class="article-date">
+  <time datetime="2007-12-12T22:21:24.000Z" itemprop="datePublished">2007-12-13</time>
 </a>
       
   <div class="article-category">
@@ -257,44 +263,28 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这两天都在测试邮件, 搞得头都大了, 现在技术问题都已经解决了, 记录一下.</p>
-<p>发送邮件一直都是一个难题, 以前没用过mail函数, 因为多数的环境下都不支持, 曾经改写过<a href="http://www.discuz.com/" title="一款优秀的国产php论坛系统">Discuz</a>的邮件类, 也用过像<a href="http://phpmailer.codeworxtech.com/" title="phpmailer project">PHPMailer</a>这样的邮件发送库来解决邮件发送的问题, 但实际上用的都是SMTP. 昨天<a href="http://www.bobhero.net/">bobhero</a>在公司内网服务器上配置了sendmail, 简单配置了之后可以使用smtp, imap和pop3. 但按照网上的教程配置了之后php的mail()函数一直都无法发送邮件, 在搜索引擎上寻找很久没有结果, 最后bobhero重新编译了配置文件, 终于成功.</p>
-<p>编译命令</p>
-<pre>make -C /etc/mail</pre>
-
-<p>收邮件要比发邮件复杂的多, 网上资源巨少, 好不容易有几篇英文的帖子和我情况类似也没有解决办法.</p>
-<p>接受邮件使用php的imap库, 遇到的问题主要在imap_open()上</p>
-<p>连接163使用</p>
-<pre>imap_open("{pop3.163.com:110/pop3}INBOX", $username, $password);</pre>
-
-<p>取得的7bit数据使用imap_qprint()解码.</p>
-<p>连接gmail使用</p>
-<pre>imap_open("imap.gmail.com:993/imap/ssl", $username, $password);</pre>
-
-<p>最难弄的就是连接本地的imap服务器, Outlook是可以从服务器上收取邮件的, 但是php就是收不到并返回错误<span style="color: #ff0000;">Certificate failure for 102.com: Self-signed certificate or untrusted authority: OU&#x3D;IMAP server, CN&#x3D;imap.example.com, E&#x3D;<a href="mailto:&#x70;&#111;&#115;&#x74;&#x6d;&#97;&#x73;&#116;&#x65;&#x72;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#x6d;">&#x70;&#111;&#115;&#x74;&#x6d;&#97;&#x73;&#116;&#x65;&#x72;&#64;&#101;&#x78;&#97;&#x6d;&#112;&#x6c;&#101;&#46;&#99;&#x6f;&#x6d;</a></span>, 使用telnet链接也没有问题, 从昨天下午研究到今天中午也没解决这个错误, 网上搜不到解决办法, 最后实在没办法了, 用<a href="http://www.xdowns.com/soft/1/78/2006/soft_34204.html" title="一款抓包工具">IP Sniffer</a>截php.exe的数据包, 然后用telnet进行模拟, 发现php.exe在和imap服务器链接成功之后使用了TLS(一个什么传输安全协议), 刚想放弃就在<a href="http://cn2.php.net/manual/en/function.imap-open.php" title="imap_open function">php.net</a>上看到原来imap_open()还有一个参数是&#x2F;notls, 我的天, 终于得救了.</p>
-<pre>imap_open("{localhost:143/imap/notls}INBOX", $username, $password);</pre>
-
-<p>研究期间发现telnet很好玩, 可以用telnet检查某项服务是否开启, 比如smtp, telnet 192.168.1.102 25, 如果服务是开启的就会建立一个连接, 可以用指令进行smtp 的相关操作, 而指令内容也就是smtp协议的相关内容, 其他协议pop, imap等等都可以这么玩.</p>
-<p><strong>相关端口:</strong></p>
-<p>smtp 协议 25端口</p>
-<p>imap 协议 143端口</p>
-<p>imap&#x2F;ssl 993端口</p>
-<p>imap&#x2F;ssl&#x2F;novalidate-cert 995端口</p>
-<p>nntp协议 119端口</p>
-<p><strong>相关资源:</strong></p>
-<p>中国协议分析网 <a href="http://www.cnpaf.net/" title="中国协议分析网">http://www.cnpaf.net/</a></p>
-<p>RFC文档 <a href="http://www.faqs.org/rfcs/">http://www.faqs.org/rfcs/</a></p>
+        <p>symfony是目前为止唯一支持pear安装的php framework, 当然如果你觉得用pear比较麻烦也可以直接在官方网站<a href="http://www.symfony-project.com上下载压缩包/">http://www.symfony-project.com上下载压缩包</a>.</p>
+<p>pear下安装步骤如下 :</p>
+<p>假如本机没有 phing 包，需要先安装phing包, phing究竟是什么我也没有搞明白：</p>
+<p>&gt; pear install <a href="http://phing.info/pear/phing-current.tgz">http://phing.info/pear/phing-current.tgz</a></p>
+<p>首先把Symfony频道加入PEAR， 执行以下命令：</p>
+<p>&gt; pear channel-discover pear.symfony-project.com</p>
+<p>然后安装稳定版本symfony</p>
+<p>&gt; pear install symfony&#x2F;symfony</p>
+<p>在漫长的等待之后运行以下命令查看是否安装成功:</p>
+<p>&gt; symfony -V</p>
+<p>如果返回了版本号码,那么恭喜你,你已经安装成功了.</p>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/787.html" data-id="cm4fsa2ef00azplv41e396i5v" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/693.html" data-id="cmpgk51uh009yssv91kps350z" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/787.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/693.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/imap/" rel="tag">imap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%82%AE%E4%BB%B6/" rel="tag">邮件</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/symfony/" rel="tag">symfony</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%89%E8%A3%85/" rel="tag">安装</a></li></ul>
 
     </footer>
   </div>
@@ -303,7 +293,7 @@
 
 
   
-    <article id="post-786" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-691" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
     
@@ -312,15 +302,15 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/786.html">保留用户输入的错误数据</a>
+      <a class="article-title" href="/691.html">vForm ver1.3 build 20071207</a>
     </h1>
   
 
       </header>
     
     <div class="article-meta">
-      <a href="/786.html" class="article-date">
-  <time datetime="2008-09-05T17:35:55.000Z" itemprop="datePublished">2008-09-06</time>
+      <a href="/691.html" class="article-date">
+  <time datetime="2007-12-06T22:21:24.000Z" itemprop="datePublished">2007-12-07</time>
 </a>
       
   <div class="article-category">
@@ -330,27 +320,31 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近公司项目比较闲， 所以很多时间都在整理代码， 这几天就又有了一个这样的需求， 当用户提交了错误的信息， 提示错误并保留用户输入的数据。</p>
-<p>起初第一个想法就是使用COOKIE, 后来又考虑使用$_SESSION, 其实两者无明显区别，大概流程是这样的， 每个请求的前面都加入下面的逻辑：</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">if</span><span class="params">(有保存的数据)</span></span>&#123;</span><br><span class="line">    <span class="built_in">if</span>(数据是不是本动作产生的)&#123;</span><br><span class="line">        如果是则取得数据</span><br><span class="line">    &#125;</span><br><span class="line">    清空保存的数据</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="title">if</span><span class="params">(是一个POST请求)</span></span>&#123;</span><br><span class="line">    保存用户的请求数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>为了简化烦琐的javascript前端验证代码,</p>
+<p>为了更好的通过w3c标准认证,</p>
+<p>Oh yeah, vForm诞生了!</p>
+<p>下载程序请直接拉到文章最后的附件部分.</p>
+<p>什么是vForm?</p>
+<p>vForm是一个php和一个javascript的结合, 再具体点说,vform由一个php类和一个javascript验证函数库组成, php的作用就是控制调用和生成javascript.</p>
+<p>为什么开发vForm?</p>
+<p>javascript验证是我们公司每个项目必须要做的工作, 为了避免反复写大量的javascript验证代码, 所以抽出了一些时间开发vForm.</p>
+<p>vForm有多方便?</p>
+<p>因为本人很懒, 所以需要程序一定要完成大部分工作.不说废话,上代码,看看vform如何完成一个表单验证. 注:需要将vform.php和vform.js放到同目录下.可以直接下载程序包,里面也有这个例子.</p>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="language-php"><span class="comment">/**</span></span></span><br><span class="line"><span class="comment"><span class="language-php"> *   这是一个vfrom使用的一个离子.本例中为大家演示了各种验证规则</span></span></span><br><span class="line"><span class="comment"><span class="language-php"> * 的使用和同页面多表单验证的实现方法.</span></span></span><br><span class="line"><span class="comment"><span class="language-php"> */</span></span></span><br><span class="line"><span class="language-php"><span class="keyword">require_once</span>(’vform.php’);</span></span><br><span class="line"><span class="language-php"><span class="variable">$config</span>  = <span class="keyword">array</span>(</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’username’,’<span class="keyword">require</span>’,’请输入帐号’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’username’,’<span class="number">10</span>′,’帐号不能超过<span class="number">10</span>位’,’<span class="number">5</span>′,’帐号不能少于<span class="number">5</span>位’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’pass’,’<span class="keyword">require</span>’,’请输入密码’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’pass’,’<span class="number">16</span>′,’密码不能超过<span class="number">16</span>位’,’<span class="number">6</span>′,’密码不能少于<span class="number">6</span>位’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’s’,’repass’,’pass’,’两次输入的密码必须相同’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’qq’,’number’,’QQ号码必须为数字’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’qq’,’<span class="number">9</span>′,’QQ号码不能超过<span class="number">9</span>位’,’<span class="number">5</span>′,’QQ号码不能少于<span class="number">5</span>位’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’phone’,’phone’,’电话号码由-和数字组成’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’name’,’chinese’,’姓名必须是汉字’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’name’,’<span class="number">4</span>′,’这里不欢迎日本人’,’<span class="number">2</span>′,’名字太短了’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’ename’,’english’,’英文名必须是英文’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’len’,’name’,’<span class="number">25</span>′,’你是火星人么?’,’<span class="number">2</span>′,’名字太短了’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’age’,’number’,’年龄要是数字才行’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’postcode’,’postcode’,’这个是邮政编码’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’p’,’percent’,’一个百分比’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’f’,’<span class="keyword">float</span>’,’一个有理数,正负小数整数等等’),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’nc’,’nochinese’,’不能输入汉字’),</span></span><br><span class="line"><span class="language-php">);</span></span><br><span class="line"><span class="language-php"><span class="variable">$config2</span>  = <span class="keyword">array</span>(</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’username2′,’<span class="keyword">require</span>’,’请输入帐号<span class="number">2</span>′),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(”,’pass2′,’<span class="keyword">require</span>’,’请输入密码<span class="number">2</span>′),</span></span><br><span class="line"><span class="language-php">  <span class="keyword">array</span>(’s’,’repass2′,’pass2′,’两次输入的密码<span class="number">2</span>必须相同’)</span></span><br><span class="line"><span class="language-php">);</span></span><br><span class="line"><span class="language-php"><span class="variable">$vform</span>   = <span class="keyword">new</span> <span class="title function_ invoke__">vform</span>(<span class="variable">$config</span>, ‘form1′);</span></span><br><span class="line"><span class="language-php"><span class="variable">$xform</span>   = <span class="keyword">new</span> <span class="title function_ invoke__">vform</span>(<span class="variable">$config2</span>, ‘b_2′, ‘click’);</span></span><br><span class="line"><span class="language-php"><span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span> <span class="keyword">PUBLIC</span> “-//W3C//DTD <span class="keyword">XHTML</span> 1.0 <span class="keyword">Transitional</span>//EN” “http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd“&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">html</span> <span class="attr">xmlns</span>=<span class="string">”http://www.w3.org/1999/xhtml”</span> <span class="attr">xml:lang</span>=<span class="string">”en”</span> <span class="attr">lang</span>=<span class="string">”en”</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">”Content-Type”</span> <span class="attr">content</span>=<span class="string">”text/html;</span> <span class="attr">charset</span>=<span class="string">utf-8″</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>vForm示例<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">”text/css”</span>&gt;</span><span class="language-css"></span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">*&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin</span>:<span class="number">0</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="selector-tag">body</span>,<span class="selector-tag">html</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font</span>:<span class="number">12px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span>:center;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-tag">h1</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font</span>:<span class="number">36px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font-weight</span>:bold;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span><span class="selector-pseudo">:left</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">background</span>:<span class="number">#ccc</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border-bottom</span>:<span class="number">2px</span> solid <span class="number">#666</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin-bottom</span>:<span class="number">10px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-tag">form</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin</span>:<span class="number">10px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-tag">img</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border</span>:<span class="number">0</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-id">#main</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">width</span>:<span class="number">275px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">margin</span>:<span class="number">0</span> auto;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span><span class="selector-pseudo">:left</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-id">#main</span> <span class="selector-tag">p</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">text-align</span><span class="selector-pseudo">:right</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">padding</span>:<span class="number">2px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-class">.text</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">width</span>:<span class="number">150px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">background</span>:<span class="number">#eee</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#666</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml"><span class="selector-class">.botton</span>&#123;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">width</span>:<span class="number">75px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">color</span>:<span class="number">#fff</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">font-weight</span>:bold;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">background</span>:<span class="number">#555</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#000</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">  <span class="attribute">padding</span>:<span class="number">2px</span>;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-css"><span class="language-xml">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?=</span><span class="variable">$vform</span>-&gt;<span class="title function_ invoke__">p</span>();<span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?=</span><span class="variable">$xform</span>-&gt;<span class="title function_ invoke__">p</span>(<span class="literal">true</span>);<span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>vForm示例<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">’main’</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">’http://www.m4ker.net’</span> <span class="attr">method</span>=<span class="string">’get’</span> <span class="attr">id</span>=<span class="string">’form1′</span> &gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>帐号:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’username’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’username’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>密码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’pass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’pass’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>重复密码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’repass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’repass’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>电话号码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’phone’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’phone’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>QQ号码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’qq’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’qq’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>姓名:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’name’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’name’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>英文名:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’ename’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’ename’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>年龄:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’age’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’age’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>邮政编码:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’postcode’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’postcode’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>百分比:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’p’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’p’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>有理数:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’f’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’f’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>非汉字:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’nc’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’nc’</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">’submit’</span> <span class="attr">value</span>=<span class="string">’验证’</span> <span class="attr">class</span>=<span class="string">’botton’</span> <span class="attr">id</span>=<span class="string">’b_1′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">’http://www.m4ker.net’</span> <span class="attr">method</span>=<span class="string">’get’</span> <span class="attr">id</span>=<span class="string">’form2′</span> &gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>帐号2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’username’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’username2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>密码2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’pass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’pass2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>重复密码2:<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">name</span>=<span class="string">’repass’</span> <span class="attr">class</span>=<span class="string">’text’</span> <span class="attr">id</span>=<span class="string">’repass2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">’submit’</span> <span class="attr">value</span>=<span class="string">’验证’</span> <span class="attr">class</span>=<span class="string">’botton’</span> <span class="attr">id</span>=<span class="string">’b_2′</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">”http://validator.w3.org/check?uri</span>=<span class="string">referer”</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">”http://www.w3.org/Icons/valid-xhtml10”</span> <span class="attr">alt</span>=<span class="string">”Valid</span> <span class="attr">XHTML</span> <span class="attr">1.0</span> <span class="attr">Transitional</span>” <span class="attr">height</span>=<span class="string">”31″</span> <span class="attr">width</span>=<span class="string">”88″</span> /&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
-
-<p>这样处理的话消息处理需要中间页跳转，就是说错误提示是一个单独的页面，这样基本可以做到将数据保存到下一个请求。这个方法后来在显示上比较麻烦，就是需要判断有没有取得的数据，有的话输出没有的话不输出， 如果使用模板引擎的话处理起来更加复杂， 于是又提出了另一种解决方案。</p>
-<p>将表单和处理程序放在一起（可能是一个function , MVC中应该是一个action中），这样的话需要显示表单或者处理数据要准备一套结构相同的数据传给页面，然后由本页显示错误消息， 不需要使用COOKIE.</p>
-<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">function <span class="built_in">actionCreate</span>()&#123;</span><br><span class="line">    <span class="built_in">if</span>(是POST请求)&#123;</span><br><span class="line">        过滤数据</span><br><span class="line">        验证数据并生成错误</span><br><span class="line">        <span class="built_in">if</span>(没有错误)&#123;</span><br><span class="line">            向数据库插入数据</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            将错误数据提交给显示层</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;else <span class="built_in">if</span>(是GET请求并且必要参数正确)&#123;</span><br><span class="line">        从数据库取得显示数据提交给显示层</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        返回一个参数错误</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$this</span>-&gt;<span class="attribute">display</span>(&#x27;create.html&#x27;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以说这个方法是比较完美的， 目前来说没有什么不足之处， 但是有很多细节是需要注意的， 比如form的action要提交给自身并且携带参数， 虽然参数无作用， 但可以用来刷新页面(window.location.href&#x3D;window.location.href)， 显示层刷新页面的功能是必须的， 因为如果是修改操作那么输入错误之后将会保留错误的信息。</p>
-<p>接下来还可以通过控制错误消息的结构识别错误是由哪一个表单项产生的， 如果需要还可以对错误进行自动修改等等。</p>
+<p>Ok了, 一点javascript都不需要.更详细的使用方法就需要大家自己发掘了.</p>
+<p>附件:<a href="http://www.foolbird.net/wp-content/uploads/2007/12/vform_ver1_3_build_20071207.zip">vform ver1.3 bulid 20071207</a></p>
 
         
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/786.html" data-id="cm4fsa2ef00avplv4bbv0hp7n" class="article-share-link">Share</a>
+      <a data-url="https://blog.foolbird.net/691.html" data-id="cmpgk51uh009ussv9awe06lfq" class="article-share-link">Share</a>
       
-        <a href="https://blog.foolbird.net/786.html#disqus_thread" class="article-comment-link">Comments</a>
+        <a href="https://blog.foolbird.net/691.html#disqus_thread" class="article-comment-link">Comments</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BF%9D%E7%95%99%E6%95%B0%E6%8D%AE/" rel="tag">保留数据</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%94%99%E8%AF%AF/" rel="tag">错误</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php/" rel="tag">php</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%AA%8C%E8%AF%81/" rel="tag">验证</a></li></ul>
 
     </footer>
   </div>
@@ -361,7 +355,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/15/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="extend next" rel="next" href="/page/17/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/15/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="page-number" href="/page/15/">15</a><span class="page-number current">16</span><a class="page-number" href="/page/17/">17</a><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/17/">Next &raquo;</a>
     </nav>
   
 
@@ -376,7 +370,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">43</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AD%98%E6%A1%A3/">存档</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">47</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">39</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">44</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
     </div>
   </div>
 
@@ -385,7 +379,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">September 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
@@ -397,7 +391,7 @@
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2006 - 2024 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
+      &copy; 2006 - 2026 王默 <a href="http://beian.miit.gov.cn/" target="_blank">吉ICP备13000316号-4</a>
     </div>
   </div>
 </footer>
