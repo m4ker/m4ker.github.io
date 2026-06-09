@@ -66,6 +66,75 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-771" class="article article-type-post" itemscope itemprop="blogPost">
+
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/771.html">Ext学习笔记(1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      <a href="/771.html" class="article-date">
+  <time datetime="2008-08-07T08:13:41.000Z" itemprop="datePublished">2008-08-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
+  </div>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>昨天用了一下午学习Ext, 搞了一下午最后连个表格都没搞出来, 今天继续, 顺便记录一下.</p>
+<p>中文在线手册 <a href="http://www.ajaxjs.com/docs/">http://www.ajaxjs.com/docs/</a></p>
+<p><span style="color: #ff0000;">这里请大家注意一下， 看手册一定要看源码包里的那个docs目录里的， Ext手册版本差异很大， 不一定最新的就一定适用。</span></p>
+<p>使用Ext之前需要加载Ext库, 昨天直接加载核心, 竟然不好用, 最后看例子里面是加载了两个文件, 原因还没搞清楚, 但先记下来.</p>
+<p>&lt;script type&#x3D;”text&#x2F;javascript” src&#x3D;”..&#x2F;ext-2.2&#x2F;adapter&#x2F;ext&#x2F;ext-base.js”&gt;&lt;&#x2F;script&gt;<br>&lt;script type&#x3D;”text&#x2F;javascript” src&#x3D;”..&#x2F;ext-2.2&#x2F;ext-all.js”&gt;&lt;&#x2F;script&gt;</p>
+<p>最基础的</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ext.onReady(fn)<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个和Jquery的$(fn)是一样的, 就是页面加载完毕执行fn</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ext.<span class="built_in">get</span>(<span class="string">&#x27;idName&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这个就是Jquery中的$(‘#idName’), 返回一个Ext的Element对象.</p>
+<p>Element.dom是该对象的DOM节点, 其他内容看手册里的Element部分</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Ext.<span class="keyword">select</span>(<span class="string">&#x27;p&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这个类似Jquery中的$(‘p’), 但是Ext中没有each, Ext.select(‘p’).methodName()直接就作用在全部对象上.</p>
+<p>事件绑定</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Element</span>.<span class="keyword">on</span>(<span class="string">&#x27;click&#x27;</span>, fn);</span><br></pre></td></tr></table></figure>
+
+<p>获得事件句柄</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">clicked = <span class="keyword">function</span>(e)&#123;</span><br><span class="line">  Ext.get(e.target).highlight();//e.target为触发该事件的对象<span class="built_in">id</span>, highlight是高亮闪烁</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Ext.<span class="keyword">select</span>(<span class="string">&#x27;p&#x27;</span>).on(<span class="string">&#x27;click&#x27;</span>,clicked);</span><br></pre></td></tr></table></figure>
+
+<p>消息框<br>Ext.MessageBox为Ext的消息对象.</p>
+<p>Ajax<br>ajax部分和Jquery非常相像了</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Ext.<span class="keyword">get</span>(<span class="string">&#x27;msg&#x27;</span>).<span class="keyword">load</span>(&#123;</span><br><span class="line">url: <span class="string">&#x27;http://test/ext/data.php&#x27;</span>,</span><br><span class="line">params: <span class="string">&#x27;name=1&#x27;</span>,</span><br><span class="line"><span class="type">text</span>: <span class="string">&#x27;Updating...&#x27;</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.foolbird.net/771.html" data-id="cmq632p4f0090e0v9as4s5x3u" class="article-share-link">Share</a>
+      
+        <a href="https://blog.foolbird.net/771.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-747" class="article article-type-post" itemscope itemprop="blogPost">
 
   <div class="article-inner">
@@ -299,87 +368,6 @@
 
 
   
-    <article id="post-725" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/725.html">CentOS+Apache+PHP+MYSQL+Python+Trac</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      <a href="/725.html" class="article-date">
-  <time datetime="2008-04-15T20:39:06.000Z" itemprop="datePublished">2008-04-16</time>
-</a>
-      
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a>
-  </div>
-
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这个是我给公司配服务器时候做的记录, 先占个位置, 以后补全.</p>
-<h1 id="CentOS-4-5"><a href="#CentOS-4-5" class="headerlink" title="CentOS 4.5"></a>CentOS 4.5</h1><p>操作系统用的是CentOS 4.5 , 主要是因为CentOS不会有版权问题.</p>
-<h1 id=""><a href="#" class="headerlink" title=""></a></h1><h1 id="MYSQL-5-0-5la"><a href="#MYSQL-5-0-5la" class="headerlink" title="MYSQL 5.0.5la"></a>MYSQL 5.0.5la</h1><h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><h1 id="root-localhost"><a href="#root-localhost" class="headerlink" title="root@localhost"></a><a href="mailto:root@localhost">root@localhost</a></h1><h1 id="-2"><a href="#-2" class="headerlink" title=""></a></h1><p>shell&gt; groupadd mysql<br>shell&gt; useradd -g mysql mysql<br>…<br>shell&gt; .&#x2F;configure –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql<br>shell&gt; make<br>shell&gt; make install<br>shell&gt; cp support-files&#x2F;my-medium.cnf &#x2F;etc&#x2F;my.cnf<br>shell&gt; cd &#x2F;usr&#x2F;local&#x2F;mysql<br>shell&gt; chown -R mysql .<br>shell&gt; chgrp -R mysql .<br>shell&gt; bin&#x2F;mysql_install_db –user&#x3D;mysql<br>shell&gt; chown -R root .<br>shell&gt; chown -R mysql var<br>shell&gt; bin&#x2F;mysqld_safe –user&#x3D;mysql &amp;</p>
-<p>#echo &#039;&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;bin&#x2F;mysqld_safe –user&#x3D;mysql &amp;&#039; &gt;&gt; &#x2F;etc&#x2F;rc.local</p>
-<p>Apache没有用2.2, 而是用了2.0, 比较稳定也足够用.</p>
-<h1 id="-3"><a href="#-3" class="headerlink" title=""></a></h1><h1 id="APACHE-2-0-63"><a href="#APACHE-2-0-63" class="headerlink" title="APACHE 2.0.63"></a>APACHE 2.0.63</h1><h1 id="-4"><a href="#-4" class="headerlink" title=""></a></h1><h1 id="DocumentRoot-usr-local-apache2-htdocs"><a href="#DocumentRoot-usr-local-apache2-htdocs" class="headerlink" title="DocumentRoot &#x2F;usr&#x2F;local&#x2F;apache2&#x2F;htdocs"></a>DocumentRoot &#x2F;usr&#x2F;local&#x2F;apache2&#x2F;htdocs</h1><h1 id="-5"><a href="#-5" class="headerlink" title=""></a></h1><p>shell&gt; .&#x2F;configure –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;apache2 –enable-dav –enable-dav-fs –enable-so –enable-rewrite<br>shell&gt; make<br>shell&gt; make install</p>
-<h1 id="-6"><a href="#-6" class="headerlink" title=""></a></h1><h1 id="PHP-5-2-5"><a href="#PHP-5-2-5" class="headerlink" title="PHP 5.2.5"></a>PHP 5.2.5</h1><h1 id="-7"><a href="#-7" class="headerlink" title=""></a></h1><p>shell&gt; .&#x2F;configure –with-apxs2&#x3D;&#x2F;usr&#x2F;local&#x2F;apache2&#x2F;bin&#x2F;apxs –with-mysql&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;php5</p>
-<p>shell&gt; make<br>shell&gt; make install<br>shell&gt; cp php.ini-dist &#x2F;usr&#x2F;local&#x2F;php5&#x2F;lib&#x2F;php.ini</p>
-<p>shell&gt; vim &#x2F;usr&#x2F;local&#x2F;apache2&#x2F;conf&#x2F;httpd.conf</p>
-<p>AddType application&#x2F;x-httpd-php .php<br>AddType application&#x2F;x-httpd-php-source .phps</p>
-<p>DirectoryIndex index.php index.html index.htm</p>
-<p>AllowOverride All</p>
-<p>&#x2F;etc&#x2F;rc.d&#x2F;rc5.d&#x2F;S97lamp</p>
-<p>&#x2F;usr&#x2F;local&#x2F;mysql&#x2F;bin&#x2F;mysqld_safe –user&#x3D;mysql &amp;<br>&#x2F;usr&#x2F;local&#x2F;apache2&#x2F;bin&#x2F;apachectl start</p>
-<p>下面这些东西是给php提供gd支持的.</p>
-<h1 id="-8"><a href="#-8" class="headerlink" title=""></a></h1><h1 id="zlib-1-2-3"><a href="#zlib-1-2-3" class="headerlink" title="zlib 1.2.3"></a>zlib 1.2.3</h1><h1 id="freetype-2-1-10"><a href="#freetype-2-1-10" class="headerlink" title="freetype 2.1.10"></a>freetype 2.1.10</h1><h1 id="libpng-1-2-25"><a href="#libpng-1-2-25" class="headerlink" title="libpng 1.2.25"></a>libpng 1.2.25</h1><h1 id="jpeg-6b"><a href="#jpeg-6b" class="headerlink" title="jpeg-6b"></a>jpeg-6b</h1><h1 id="gd-2-0-33"><a href="#gd-2-0-33" class="headerlink" title="gd 2.0.33"></a>gd 2.0.33</h1><h1 id="-9"><a href="#-9" class="headerlink" title=""></a></h1><p>tar zxvf zlib-1.2.3.tar.gz<br>cd zlib-1.2.3<br>.&#x2F;configure<br>make<br>make install</p>
-<p>tar zxvf freetype-2.1.10.tar.gz<br>cd freetype-2.1.10<br>.&#x2F;configure –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;modules&#x2F;freetype<br>make<br>make install</p>
-<p>tar zxvf libpng-1.2.8-config.tar.gz<br>cd libpng-1.2.8-config<br>.&#x2F;configure<br>make<br>make install</p>
-<p>tar zxvf jpegsrc.v6b.tar.gz<br>cd jpeg-6b<br>.&#x2F;configure –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;modules&#x2F;jpeg6 –enable-shared –enable-static<br>make<br>make install</p>
-<p>tar zxvf gd-2.0.33.tar.gz<br>cd gd-2.0.33<br>.&#x2F;configure –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;modules&#x2F;gd –with-jpeg&#x3D;&#x2F;usr&#x2F;local&#x2F;modules&#x2F;jpeg6 –with-png –with-zlib –with-freetype&#x3D;&#x2F;usr&#x2F;local&#x2F;modules&#x2F;freetype<br>make<br>make install</p>
-<p>先把目录建了, 要不编译的时候会找不到文件夹.</p>
-<h1 id="mkdir-jpeg6"><a href="#mkdir-jpeg6" class="headerlink" title="mkdir jpeg6"></a>mkdir jpeg6</h1><h1 id="mkdir-jpeg6-include"><a href="#mkdir-jpeg6-include" class="headerlink" title="mkdir jpeg6&#x2F;include"></a>mkdir jpeg6&#x2F;include</h1><h1 id="mkdir-jpeg6-lib"><a href="#mkdir-jpeg6-lib" class="headerlink" title="mkdir jpeg6&#x2F;lib"></a>mkdir jpeg6&#x2F;lib</h1><h1 id="mkdir-jpeg6-bin"><a href="#mkdir-jpeg6-bin" class="headerlink" title="mkdir jpeg6&#x2F;bin"></a>mkdir jpeg6&#x2F;bin</h1><h1 id="mkdir-jpeg6-man"><a href="#mkdir-jpeg6-man" class="headerlink" title="mkdir jpeg6&#x2F;man"></a>mkdir jpeg6&#x2F;man</h1><h1 id="mkdir-jpeg6-man-man1"><a href="#mkdir-jpeg6-man-man1" class="headerlink" title="mkdir jpeg6&#x2F;man&#x2F;man1"></a>mkdir jpeg6&#x2F;man&#x2F;man1</h1><p>shell&gt; .&#x2F;configure –with-apxs2&#x3D;&#x2F;usr&#x2F;local&#x2F;apache2&#x2F;bin&#x2F;apxs –with-mysql&#x3D;&#x2F;usr&#x2F;local&#x2F;mysql –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;php5 –with-iconv –with-mbstring –enable-mbstring –with-jpeg-dir&#x3D;&#x2F;usr&#x2F;local&#x2F;jpeg6&#x2F; –with-zlib –with-png –with-freetype-dir&#x3D;&#x2F;usr&#x2F;local&#x2F;freetype&#x2F; –with-gd&#x3D;&#x2F;usr&#x2F;local&#x2F;gd&#x2F;</p>
-<h1 id="-10"><a href="#-10" class="headerlink" title=""></a></h1><h1 id="Subversion-1-4-6"><a href="#Subversion-1-4-6" class="headerlink" title="Subversion 1.4.6"></a>Subversion 1.4.6</h1><h1 id="-11"><a href="#-11" class="headerlink" title=""></a></h1><p>shell&gt;.&#x2F;configure –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;subversion</p>
-<p>一开始打算用mysql来存放账号密码的, 建好了数据表但是没有用.</p>
-<p>CREATE DATABASE <code>svn</code>;<br>CREATE TABLE <code>user</code> (<br><code>username</code> varchar(25) collate utf8_unicode_ci NOT NULL default ‘’,<br><code>passwd</code> varchar(25) collate utf8_unicode_ci NOT NULL default ‘’,<br><code>groups</code> varchar(25) collate utf8_unicode_ci NOT NULL default ‘’,<br>PRIMARY KEY (<code>username</code>),<br>KEY <code>groups</code> (<code>groups</code>)<br>) ENGINE&#x3D;MyISAM DEFAULT CHARSET&#x3D;utf8 COLLATE&#x3D;utf8_unicode_ci;</p>
-<h1 id="-12"><a href="#-12" class="headerlink" title=""></a></h1><h1 id="mod-python-3-3-1"><a href="#mod-python-3-3-1" class="headerlink" title="mod_python 3.3.1"></a>mod_python 3.3.1</h1><h1 id="-13"><a href="#-13" class="headerlink" title=""></a></h1><p>.&#x2F;configure –with-apxs&#x3D;&#x2F;usr&#x2F;local&#x2F;apache2&#x2F;bin&#x2F;apx<br>make<br>make install</p>
-<h1 id="-14"><a href="#-14" class="headerlink" title=""></a></h1><h1 id="clearsilver-0-10-5"><a href="#clearsilver-0-10-5" class="headerlink" title="clearsilver-0.10.5"></a>clearsilver-0.10.5</h1><h1 id="-15"><a href="#-15" class="headerlink" title=""></a></h1><p>shell&gt;.&#x2F;configure –disable-apache –disable-csharp –disable-ruby –prefix&#x3D;&#x2F;usr&#x2F;local&#x2F;clearsliver –with-python</p>
-<p>shell&gt;make</p>
-<p>shell&gt;make install</p>
-<p>shell&gt;cd python&#x2F;</p>
-<p>PYTHON_SITE&#x3D;&#039;python -C <br>“import sys; print [path for path in sys.path if path.find(&#039;site-packages&#039;) !&#x3D; -1][0]”&#039;</p>
-<p>shell&gt;python setup.py install</p>
-<h1 id="-16"><a href="#-16" class="headerlink" title=""></a></h1><h1 id="mysql-python-1-2-2"><a href="#mysql-python-1-2-2" class="headerlink" title="mysql-python 1.2.2"></a>mysql-python 1.2.2</h1><h1 id="-17"><a href="#-17" class="headerlink" title=""></a></h1><p>set.cfg<br>修改mysql_config绝对路径<br>安全线程-&gt;false<br>shell&gt;python setup.py build<br>shell&gt;puthon setup.py install</p>
-<h1 id="-18"><a href="#-18" class="headerlink" title=""></a></h1><h1 id="trac-0-11b2"><a href="#trac-0-11b2" class="headerlink" title="trac 0.11b2"></a>trac 0.11b2</h1><h1 id="-19"><a href="#-19" class="headerlink" title=""></a></h1><h1 id="tar-zxvf-trac-0-10-4-tar-gz"><a href="#tar-zxvf-trac-0-10-4-tar-gz" class="headerlink" title="tar zxvf trac-0.10.4.tar.gz"></a>tar zxvf trac-0.10.4.tar.gz</h1><h1 id="python-setup-py-install"><a href="#python-setup-py-install" class="headerlink" title="python .&#x2F;setup.py install"></a>python .&#x2F;setup.py install</h1><h1 id="trac-admin-usr-local-trac-order-initenv-usr-loca-trac-目录会自动创建"><a href="#trac-admin-usr-local-trac-order-initenv-usr-loca-trac-目录会自动创建" class="headerlink" title="trac-admin &#x2F;usr&#x2F;local&#x2F;trac&#x2F;order initenv    (&#x2F;usr&#x2F;loca&#x2F;trac 目录会自动创建)"></a>trac-admin &#x2F;usr&#x2F;local&#x2F;trac&#x2F;order initenv    (&#x2F;usr&#x2F;loca&#x2F;trac 目录会自动创建)</h1><p>#Project Name [My Project]&gt; test<br>#Database connection string [sqlite:db&#x2F;trac.db]&gt; mysql:&#x2F;&#x2F;trac:trac@localhost&#x2F;trac  &#x2F;&#x2F;前面创建数据库所用的到信息<br>#Repository type [svn]&gt;     &#x2F;&#x2F;这里为空,直接回车<br>#Path to repository [&#x2F;path&#x2F;to&#x2F;repos]&gt; &#x2F;var&#x2F;svn&#x2F;order   &#x2F;&#x2F;SVN仓库地址</p>
-<p>&lt;Location &#x2F;trac&gt;<br>SetHandler mod_python<br>PythonHandler trac.web.modpython_frontend<br>PythonOption TracEnvParentDir &#x2F;usr&#x2F;local&#x2F;trac<br>SetEnv PYTHON_EGG_CACHE &#x2F;tmp<br>PythonOption TracUriRoot &#x2F;trac<br>AuthType Basic<br>AuthName “test&#039;s trac”<br>AuthUserFile &#x2F;var&#x2F;svn&#x2F;passwd<br>Require valid-user<br></Location></p>
-
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.foolbird.net/725.html" data-id="cmq632p4e008ne0v9ceztf7ou" class="article-share-link">Share</a>
-      
-        <a href="https://blog.foolbird.net/725.html#disqus_thread" class="article-comment-link">Comments</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/centos/" rel="tag">centos</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lamp/" rel="tag">lamp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/svn/" rel="tag">svn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/trac/" rel="tag">trac</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/14/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span><a class="page-number" href="/page/16/">16</a><a class="page-number" href="/page/17/">17</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/16/">Next &raquo;</a>
@@ -397,7 +385,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Categories</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">41</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">41</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%85%B6%E4%BB%96/">其他</a><span class="category-list-count">42</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%AE%A3%E4%BC%A0/">宣传</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a><span class="category-list-count">41</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%85%E8%A1%8C/">旅行</a><span class="category-list-count">29</span></li></ul>
     </div>
   </div>
 
@@ -406,7 +394,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/05/">May 2026</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/12/">December 2024</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">December 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/">December 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">September 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">June 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">May 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/07/">July 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/04/">April 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/03/">March 2013</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/01/">January 2013</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/11/">November 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/10/">October 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/09/">September 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">March 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/01/">January 2012</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/12/">December 2011</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/11/">November 2011</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/10/">October 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">June 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/03/">March 2011</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/02/">February 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/10/">October 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/03/">March 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/01/">January 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">August 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">June 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">December 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">October 2008</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">September 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">August 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">May 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">April 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">December 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">November 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">September 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/07/">July 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">June 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">May 2007</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/03/">March 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/02/">February 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/01/">January 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2006/12/">December 2006</a><span class="archive-list-count">4</span></li></ul>
     </div>
   </div>
 
